@@ -2484,8 +2484,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const pit = Number(document.getElementById('pitDepth').value || 0);
             const top = Number(document.getElementById('topHeight').value || 0);
             const totalHeight = pit + sum + top;
-            document.getElementById('liftHeightDisplay').textContent = '提升高度：' + (sum / 1000).toFixed(1) + ' 米';
-            document.getElementById('totalHeightDisplay').textContent = '井道总高度：' + (totalHeight / 1000).toFixed(2) + ' 米（底坑' + pit + ' + 提升' + sum + ' + 顶层' + top + '）';
+            document.getElementById('liftHeightDisplay').textContent = '提升高度：' + sum + ' mm';
+            document.getElementById('totalHeightDisplay').textContent = '井道总高度：' + totalHeight + ' mm（底坑' + pit + ' + 提升' + sum + ' + 顶层' + top + '）';
             // 同步铝合金玻璃高度
             const frameH = (totalHeight / 1000).toFixed(1);
             const gh = document.getElementById('aluGlassHeight');
