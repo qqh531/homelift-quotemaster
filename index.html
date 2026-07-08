@@ -136,7 +136,7 @@
                         </div>
                         <div id="aluColHeight" class="hidden">
                             <label class="block text-sm mb-1 text-slate-600">井架高度（米）</label>
-                            <input id="aluFrameHeight" type="number" min="1" value="12" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                            <div class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700" id="aluFrameHeightDisplay">0</div>
                             <div class="text-xs text-primary font-semibold mt-1" id="aluFrameTotalDisplay"></div>
                         </div>
                         <div>
@@ -157,9 +157,22 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm mb-1 text-slate-600">提升高度（mm）<span class="text-xs text-slate-400 font-normal">标准 3200</span></label>
-                            <input id="floorHeight" type="number" min="2000" max="6000" value="3200" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
-                            <div class="text-xs text-slate-500 mt-1" id="liftHeightDisplay">提升高度：0 米</div>
+                            <div class="mb-3">
+                                <label class="block text-sm mb-1 text-slate-600">底坑深度（mm）</label>
+                                <input id="pitDepth" type="number" min="0" max="2000" value="300" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm mb-1 text-slate-600">每层高度（mm）<span class="text-xs text-slate-400 font-normal">标准 3200</span></label>
+                                <div id="floorHeights"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm mb-1 text-slate-600">顶层高度（mm）</label>
+                                <input id="topHeight" type="number" min="2000" max="5000" value="2800" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                            </div>
+                            <div class="text-xs text-slate-500 mt-2 space-y-1">
+                                <div id="liftHeightDisplay">提升高度：0 米</div>
+                                <div id="totalHeightDisplay" class="text-primary font-semibold">井道总高度：0 米</div>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm mb-1 text-slate-600">井道备注</label>
@@ -1304,9 +1317,22 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             // 2. 铝合金井架（从新 radio 按钮取型变体，价格按规格 40/55 计算）
             const frameKey = document.querySelector('input[name="aluFrame"]:checked')?.value || '40A-round-square';
             const frameSpec = frameKey.startsWith('40') ? '40' : '55';
-            const frameHeight = Number(document.getElementById('aluFrameHeight').value || 12);
-            const framePrice = ALUMINUM_FRAME_PRICES[frameSpec] * frameHeight;
             const frameSpecLabel = ALUMINUM_FRAME_TYPES[frameKey]?.label || (frameSpec === '40' ? '40#铝合金井架' : '55#铝合金井架');
+            // 各层高度求和 + 井道总高
+            let liftHeight = 0;
+            let heightSurcharge = 0;
+            const floorHeights = [];
+            for (let i = 1; i <= fl; i++) {
+                const h = Number(document.getElementById('floorH_' + i).value || 3200);
+                floorHeights.push(h);
+                liftHeight += h;
+                if (h > 3200) heightSurcharge += (h - 3200) / 1000 * 400;
+            }
+            const pitDepth = Number(document.getElementById('pitDepth').value || 0);
+            const topHeight = Number(document.getElementById('topHeight').value || 0);
+            const shaftTotalHeight = pitDepth + liftHeight + topHeight;
+            const frameHeight = shaftTotalHeight / 1000;
+            const framePrice = ALUMINUM_FRAME_PRICES[frameSpec] * frameHeight;
             // 3. 观光玻璃（可选）
             const hasGlass = document.getElementById('aluGlassCheck').checked;
             const glassHeight = hasGlass ? Number(document.getElementById('aluGlassHeight').value || 12) : 0;
@@ -1350,10 +1376,6 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const aluCallButtonLabel = selectedAluminumCallButton ? selectedAluminumCallButton.label : '未选择';
             // 15. 踢脚线灯带
             const aluBaseboardPrice = selectedAluminumBaseboardCount * ALUMINUM_BASEBOARD_PRICE;
-            // 楼层超高
-            const floorHeight = Number(document.getElementById('floorHeight').value || 3200);
-            const heightSurcharge = floorHeight > 3200 ? (floorHeight - 3200) * fl / 1000 * 400 : 0;
-            const liftHeight = floorHeight * fl / 1000;
             // 总和
             const subtotal = basePrice + floorSurcharge + framePrice + glassPrice + aluminumCabinPrice + aluminumDoorPrice + doorPrice + throughDoorPrice + counterweightPrice + modelTypePrice + floorPrice + addonsPrice + aluCabinStylePrice + aluTouchscreenPrice + aluCallButtonPrice + aluBaseboardPrice + heightSurcharge;
             return {
@@ -1371,7 +1393,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 floors: fl,
                 stops: Number(document.getElementById('stops').value || 2),
                 landingDoors: ld,
-                liftHeight, liftHeightInput, heightSurcharge,
+                liftHeight: liftHeight / 1000, floorHeights, heightSurcharge,
+                pitDepth, topHeight, shaftTotalHeight,
                 // New aluminum selection fields
                 aluCabinStylePrice, aluCabinStyleLabel,
                 aluTouchscreenPrice, aluTouchscreenLabel,
@@ -1406,9 +1429,19 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const addonsPrice = addons.reduce((sum, item) => sum + item.price, 0);
             const floors = Number(document.getElementById('floors').value || 2);
             const floorSurcharge = Math.max(0, floors - 2) * FLOOR_SURCHARGE;
-            const floorHeight = Number(document.getElementById('floorHeight').value || 3200);
-            const heightSurcharge = floorHeight > 3200 ? (floorHeight - 3200) * floors / 1000 * 400 : 0;
-            const liftHeight = floorHeight * floors / 1000;
+            // 每层高度求和
+            let liftHeight = 0;
+            let heightSurcharge = 0;
+            const floorHeights = [];
+            for (let i = 1; i <= floors; i++) {
+                const h = Number(document.getElementById('floorH_' + i).value || 3200);
+                floorHeights.push(h);
+                liftHeight += h;
+                if (h > 3200) heightSurcharge += (h - 3200) / 1000 * 400;
+            }
+            const pitDepth = Number(document.getElementById('pitDepth').value || 0);
+            const topHeight = Number(document.getElementById('topHeight').value || 0);
+            const shaftTotalHeight = pitDepth + liftHeight + topHeight;
             const subtotal = basePrice + speedPrice + doorPrice + throughDoorPrice + counterweightPrice + decorationPrice + cabinPrice + modelTypePrice + floorPrice + addonsPrice + floorSurcharge + heightSurcharge;
             return {
                 subtotal, total: subtotal,
@@ -1421,7 +1454,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 cabinModel: selectedCabinModel,
                 floorPrice, addonsPrice, floorSurcharge, addons,
                 floors, stops: Number(document.getElementById('stops').value || 2),
-                landingDoors: ld, liftHeight, floorHeight, heightSurcharge
+                landingDoors: ld, liftHeight: liftHeight / 1000, floorHeights, heightSurcharge,
+                pitDepth, topHeight, shaftTotalHeight
             };
         }
 
@@ -1481,7 +1515,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 document.getElementById('aluDecorGradePrice').textContent = gradePrice > 0 ? `+${formatPrice(gradePrice)}` : '0 元';
                 document.getElementById('aluDecorCabinTotal').textContent = formatPrice(price.aluminumCabinPrice);
                 // 配置区总价显示
-                document.getElementById('aluFrameTotalDisplay').textContent = `${formatPrice(unitPrice)}/米 × ${price.frameHeight}米 = ${formatPrice(price.framePrice)}`;
+                document.getElementById('aluFrameHeightDisplay').textContent = price.frameHeight.toFixed(1) + ' 米（井道总高）';
+                document.getElementById('aluFrameTotalDisplay').textContent = `${formatPrice(unitPrice)}/米 × ${price.frameHeight.toFixed(1)}米 = ${formatPrice(price.framePrice)}`;
                 if (price.hasGlass) {
                     document.getElementById('aluGlassTotalDisplay').textContent = `观光玻璃：${formatPrice(ALUMINUM_GLASS_PRICE_PER_M)}/米 × ${price.glassHeight}米 = ${formatPrice(price.glassPrice)}`;
                 } else {
@@ -1493,6 +1528,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 document.getElementById('aluCallButtonPriceText').textContent = formatPrice(price.aluCallButtonPrice);
                 document.getElementById('aluBaseboardPriceText').textContent = formatPrice(price.aluBaseboardPrice);
             } else {
+                document.getElementById('aluFrameHeightDisplay').textContent = '0';
                 document.getElementById('aluFrameTotalDisplay').textContent = '';
                 document.getElementById('aluGlassTotalDisplay').textContent = '';
                 document.getElementById('basePriceText').textContent = formatPrice(price.basePrice);
@@ -1594,6 +1630,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 <div>开门结构：<span class="font-semibold">${selectedDoorLabel()}</span></div>
                 <div>曳引方式：<span class="font-semibold">${price.modelTypeLabel}</span></div>
                 <div>提升高度：<span class="font-semibold">${price.liftHeight} 米</span></div>
+                <div>井道总高：<span class="font-semibold">${(price.shaftTotalHeight / 1000).toFixed(2)} 米</span></div>
                 <div>井道备注：<span class="font-semibold">${document.getElementById('shaftRemark').value.trim() || '—'}</span></div>
                 ${price.throughDoorPrice > 0 ? `<div>贯通门：<span class="font-semibold">${price.throughLabel}（轿门¥${price.throughCarPrice}${price.throughLandingPrice > 0 ? ' + 厅门¥' + price.throughLandingPrice + '（' + price.extraDoors + '道）' : ''}）</span></div>` : ''}
                 ${price.counterweightPrice > 0 ? `<div>对重钢板：<span class="font-semibold">${price.cwFull ? '全钢板对重' : price.cwKg + 'kg'} — ${formatPrice(price.counterweightPrice)}</span></div>` : ''}
@@ -1604,6 +1641,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 <div>速度：<span class="font-semibold">${getSpeedLabel()}</span></div>
                 <div>层/站/门：<span class="font-semibold">${price.floors}层/${price.stops}站/${price.landingDoors}门</span></div>
                 <div>提升高度：<span class="font-semibold">${price.liftHeight} 米</span></div>
+                <div>井道总高：<span class="font-semibold">${(price.shaftTotalHeight / 1000).toFixed(2)} 米</span></div>
                 <div>井道备注：<span class="font-semibold">${document.getElementById('shaftRemark').value.trim() || '—'}</span></div>
                 ${price.throughDoorPrice > 0 ? `<div>贯通门：<span class="font-semibold">${price.throughLabel}（轿门¥${price.throughCarPrice}${price.throughLandingPrice > 0 ? ' + 厅门¥' + price.throughLandingPrice + '（' + price.extraDoors + '道）' : ''}）</span></div>` : ''}
                 ${price.counterweightPrice > 0 ? `<div>对重钢板：<span class="font-semibold">${price.cwFull ? '全钢板对重' : price.cwKg + 'kg'} — ${formatPrice(price.counterweightPrice)}</span></div>` : ''}
@@ -1939,8 +1977,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
 
             // 楼层超高加价
             if (price.heightSurcharge > 0) {
-                const exceedMm = price.floorHeight - 3200;
-                detailItems.push(['楼层超高（+' + exceedMm + 'mm）', price.heightSurcharge / 10000]);
+                detailItems.push(['楼层超高加价', price.heightSurcharge / 10000]);
             }
 
             // 附加功能：每项单独一行
@@ -2337,13 +2374,13 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             document.getElementById('floors').value = 2;
             document.getElementById('stops').value = 2;
             document.getElementById('landingDoors').value = 2;
-            document.getElementById('floorHeight').value = 3200;
+            document.getElementById('pitDepth').value = 300;
+            document.getElementById('topHeight').value = 2800;
             document.getElementById('shaftRemark').value = '';
             document.getElementById('productSeries').value = 'standard';
             document.getElementById('capacity').value = '400';
             document.getElementById('speed').value = '0.4';
             document.getElementById('aluFrameSpec').value = '40';
-            document.getElementById('aluFrameHeight').value = 12;
             document.getElementById('aluGlassCheck').checked = true;
             document.getElementById('aluGlassHeight').value = 12;
             document.querySelector('input[name="modelType"][value="MH-S"]').checked = true;
@@ -2369,6 +2406,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             selectedDecoration = 0;
             selectedCabinModel = null;
             document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）';
+            // 重新初始化每层高度输入
+            updateFloorHeightInputs();
             onProductSeriesChange();
             updateSummary();
             switchTab('config');
@@ -2413,14 +2452,47 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         document.getElementById('backBtn').addEventListener('click', () => switchTab('config'));
         document.getElementById('printBtn').addEventListener('click', () => window.print());
 
-        function updateLiftHeightDisplay() {
-            const fh = Number(document.getElementById('floorHeight').value || 3200);
-            const fl = Number(document.getElementById('floors').value || 2);
-            const totalM = (fh * fl / 1000).toFixed(1);
-            document.getElementById('liftHeightDisplay').textContent = '提升高度：' + totalM + ' 米（' + fh + 'mm × ' + fl + '层）';
+        function updateFloorHeightInputs() {
+            const n = Number(document.getElementById('floors').value || 2);
+            const container = document.getElementById('floorHeights');
+            const current = container.children.length;
+            for (let i = 1; i <= n; i++) {
+                if (i > current) {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center gap-2 mt-1';
+                    div.innerHTML = '<span class="text-xs text-slate-500 w-10">' + i + 'F</span><input type="number" id="floorH_' + i + '" min="2000" max="6000" value="3200" class="field flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500"><span class="text-xs text-slate-400">mm</span>';
+                    container.appendChild(div);
+                    div.querySelector('input').addEventListener('input', updateLiftHeightDisplay);
+                }
+            }
+            while (container.children.length > n) {
+                container.removeChild(container.lastChild);
+            }
+            updateLiftHeightDisplay();
         }
-        document.getElementById('floorHeight').addEventListener('input', updateLiftHeightDisplay);
-        document.getElementById('floors').addEventListener('input', updateLiftHeightDisplay);
+
+        function updateLiftHeightDisplay() {
+            const n = Number(document.getElementById('floors').value || 2);
+            let sum = 0;
+            for (let i = 1; i <= n; i++) {
+                const inp = document.getElementById('floorH_' + i);
+                if (inp) sum += Number(inp.value || 3200);
+            }
+            const pit = Number(document.getElementById('pitDepth').value || 0);
+            const top = Number(document.getElementById('topHeight').value || 0);
+            const totalHeight = pit + sum + top;
+            document.getElementById('liftHeightDisplay').textContent = '提升高度：' + (sum / 1000).toFixed(1) + ' 米';
+            document.getElementById('totalHeightDisplay').textContent = '井道总高度：' + (totalHeight / 1000).toFixed(2) + ' 米（底坑' + pit + ' + 提升' + sum + ' + 顶层' + top + '）';
+            // 同步铝合金玻璃高度
+            const frameH = (totalHeight / 1000).toFixed(1);
+            const gh = document.getElementById('aluGlassHeight');
+            if (gh) gh.value = frameH;
+        }
+        document.getElementById('floors').addEventListener('input', updateFloorHeightInputs);
+        document.getElementById('pitDepth').addEventListener('input', updateLiftHeightDisplay);
+        document.getElementById('topHeight').addEventListener('input', updateLiftHeightDisplay);
+        // 初始化每层高度输入
+        updateFloorHeightInputs();
 
         document.getElementById('cabinSelectBtn').addEventListener('click', openCabinModal);
         document.getElementById('cabinModalClose').addEventListener('click', closeCabinModal);
