@@ -289,19 +289,52 @@
 
                 <div id="decorationSection" class="bg-white rounded-2xl border border-slate-200 shadow-soft p-6">
                     <h2 class="text-lg font-bold flex items-center gap-2 mb-5"><i class="fa fa-paint-brush text-primary"></i>轿厢装潢与配置</h2>
-                    <!-- 标准系列：装饰方案 -->
+                    <!-- 标准系列：装饰方案（统一界面） -->
                     <div id="stdDecorationContent">
                         <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 mb-4">
                             <div class="text-base font-bold">标准发纹不锈钢</div>
                             <div class="text-sm text-slate-500">基础配置，不加价</div>
                         </div>
                         <div class="pt-4 border-t border-slate-200">
-                            <div class="flex items-center justify-between gap-3 flex-wrap">
-                                <div>
-                                    <div class="font-bold text-sm flex items-center gap-1.5"><i class="fa fa-cubes text-primary"></i>轿厢装潢款式</div>
-                                    <div id="cabinDisplay" class="text-sm text-slate-500 mt-0.5"></div>
+                            <!-- 统一按钮：打开完整配置弹窗 -->
+                            <div class="flex justify-center mb-5">
+                                <button id="cabinSelectBtn" type="button" class="bg-primary hover:bg-blue-800 text-white px-8 py-3 rounded-xl font-medium transition shadow-sm"><i class="fa fa-book mr-2"></i>选择款式</button>
+                                <span class="text-xs text-slate-400 ml-3 self-center">弹窗内可切换各类配置</span>
+                            </div>
+                            <!-- 紧凑摘要：点击任意项跳转到对应弹窗页 -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm" id="stdConfigSummary">
+                                <div onclick="openCabinModal('cabin')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-cubes text-primary w-4 mr-1"></i>轿厢款式</span>
+                                    <span id="cabinDisplay" class="font-medium text-xs text-right"></span>
                                 </div>
-                                <button id="cabinSelectBtn" type="button" class="bg-primary hover:bg-blue-800 text-white px-4 py-2 rounded-xl text-sm font-medium transition"><i class="fa fa-book mr-1"></i>选择款式</button>
+                                <div onclick="openCabinModal('touchscreen')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-tablet text-primary w-4 mr-1"></i>触摸屏</span>
+                                    <span id="stdTouchscreenDisplay" class="font-medium text-xs text-right"></span>
+                                </div>
+                                <div onclick="openCabinModal('callbutton')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-bell text-primary w-4 mr-1"></i>外呼款式</span>
+                                    <span id="stdCallButtonDisplay" class="font-medium text-xs text-right"></span>
+                                </div>
+                                <div onclick="openCabinModal('cop')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-keyboard-o text-primary w-4 mr-1"></i>操作箱</span>
+                                    <span id="stdCOPDisplay" class="font-medium text-xs text-right"></span>
+                                </div>
+                                <div onclick="openCabinModal('ceiling')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-sun-o text-primary w-4 mr-1"></i>吊顶款式</span>
+                                    <span id="stdCeilingDisplay" class="font-medium text-xs text-right"></span>
+                                </div>
+                                <div onclick="openCabinModal('baseslab')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-square text-primary w-4 mr-1"></i>基础岩板</span>
+                                    <span id="stdBaseSlabDisplay" class="font-medium text-xs text-right"></span>
+                                </div>
+                                <div onclick="openCabinModal('ground')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-th-large text-primary w-4 mr-1"></i>地面</span>
+                                    <span id="stdGroundDisplay" class="font-medium text-xs text-right"></span>
+                                </div>
+                                <div onclick="openCabinModal('halldoor')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
+                                    <span class="text-slate-500 text-xs"><i class="fa fa-door-open text-primary w-4 mr-1"></i>厅门款式</span>
+                                    <span id="stdHallDoorDisplay" class="font-medium text-xs text-right"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -357,33 +390,6 @@
                 </div>
 
 <!-- 标准配置提示：基础配置下方会显示文字编辑 -->
-
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-soft p-4">
-                    <h2 class="text-lg font-bold flex items-center gap-2 mb-3"><i class="fa fa-th-large text-primary"></i>地面配置</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4 hover:border-blue-300 transition cursor-pointer">
-                            <input type="radio" name="floorOption" value="0" class="field mt-1" checked>
-                            <div>
-                                <div class="font-medium">标准地面</div>
-                                <div class="text-sm text-slate-500">基础配置</div>
-                            </div>
-                        </label>
-                        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4 hover:border-blue-300 transition cursor-pointer">
-                            <input type="radio" name="floorOption" value="1000" class="field mt-1">
-                            <div>
-                                <div class="font-medium">素面大理石地面</div>
-                                <div class="text-sm text-slate-500">加价 1000 元</div>
-                            </div>
-                        </label>
-                        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4 hover:border-blue-300 transition cursor-pointer">
-                            <input type="radio" name="floorOption" value="1800" class="field mt-1">
-                            <div>
-                                <div class="font-medium">拼花大理石地面</div>
-                                <div class="text-sm text-slate-500">加价 1800 元</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
 
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-soft p-4">
                     <h2 class="text-lg font-bold flex items-center gap-2 mb-3"><i class="fa fa-plus-square text-primary"></i>附加功能</h2>
@@ -487,10 +493,20 @@
     </main>
 
     <div id="cabinModal" class="fixed inset-0 z-50 hidden bg-black/40 flex items-center justify-center p-4 no-print">
-        <div class="bg-white rounded-2xl shadow-soft max-w-3xl w-full max-h-[85vh] flex flex-col">
+        <div class="bg-white rounded-2xl shadow-soft max-w-6xl w-full max-h-[90vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
-                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa fa-cubes text-primary"></i>选择轿厢装潢款式</h3>
+                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa fa-cubes text-primary"></i>家用电梯配置选择</h3>
                 <button id="cabinModalClose" type="button" class="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
+            </div>
+            <div class="flex border-b border-slate-200 px-6 overflow-x-auto" id="cabinModalTabs">
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium border-b-2 border-primary text-primary whitespace-nowrap" data-tab="cabin">轿厢款式</button>
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="touchscreen">触摸屏</button>
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="callbutton">外呼款式</button>
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="cop">轿内操作箱</button>
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="ceiling">吊顶款式</button>
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="baseslab">基础岩板</button>
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="ground">地面</button>
+                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="halldoor">厅门款式</button>
             </div>
             <div class="p-6 overflow-y-auto space-y-6" id="cabinModalBody"></div>
             <div class="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
@@ -568,6 +584,15 @@ let selectedAluminumCabinStyle = null;    // { id, label, image, price }
 let selectedAluminumColor = null;         // { id, label, image }
 let selectedAluminumTouchscreen = null;   // { id, label, image, price }
 let selectedAluminumCallButton = null;    // { id, label, image, price }
+// 家用梯系列独立状态
+let selectedStandardTouchscreen = null;   // 默认在 init 中设置
+let selectedStandardCallButton = null;    // 默认在 init 中设置
+let selectedStandardCOP = null;           // { id, label, image/images, price } — 与触摸屏二选一
+let selectedStandardCeiling = null;        // 吊顶款式
+let selectedStandardBaseSlab = null;       // 基础岩板款式
+let selectedMarbleStyle = null;            // 素面大理石地面款式
+let selectedFloorType = 'standard';        // 'standard' | 'marble' | 'parquet'
+let selectedHallDoorStyle = null;          // 厅门款式 { id, label, image, price }
 let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         let selectedAluminumGrade = 'economy';
         let selectedAluminumFrame = '40A-round-square';
@@ -616,11 +641,18 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             }));
         })();
 
-        // 触摸屏款式（默认 M-C06，共3款）
+        // 触摸屏款式（铝合金系列，共3款）
         const ALUMINUM_TOUCHSCREEN_OPTIONS = [
             { id: 'M-C06', label: '触摸屏 M-C06', image: './素材/alu-cabin/touchscreens/touch1.png', price: 0 },
             { id: 'M-C07', label: '触摸屏 M-C07', image: './素材/alu-cabin/touchscreens/touch2.png', price: 0 },
             { id: 'M-C08', label: '触摸屏 M-C08', image: './素材/alu-cabin/touchscreens/touch3.png', price: 0 }
+        ];
+
+        // 家用电梯系列触摸屏款式（从 触摸屏选择.docx 提取，共3款）
+        const STANDARD_TOUCHSCREEN_OPTIONS = [
+            { id: 'M-C06', label: '触摸屏 M-C06', image: './素材/alu-cabin/touchscreens2/image1.png', price: 0 },
+            { id: 'M-C05A', label: '触摸屏 M-C05A', image: './素材/alu-cabin/touchscreens2/image2.png', price: 0 },
+            { id: 'M-C04A', label: '触摸屏 M-C04A', image: './素材/alu-cabin/touchscreens2/image3.png', price: 0 }
         ];
 
         // 外呼款式（默认 M-W10，共6款）
@@ -633,7 +665,83 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             { id: 'M-W15', label: '外呼 M-W15', image: './素材/alu-cabin/callbuttons/call6.png', price: 0 }
         ];
 
+        // 家用电梯系列外呼款式（从 家用电梯外呼款式.docx 提取，共4款）
+        const STANDARD_CALL_BUTTON_OPTIONS = [
+            { id: 'M-W01', label: '外呼 M-W01', image: './素材/alu-cabin/std-callbuttons/image1.png', price: 0 },
+            { id: 'M-W02', label: '外呼 M-W02', image: './素材/alu-cabin/std-callbuttons/image2.png', price: 0 },
+            { id: 'M-W03', label: '外呼 M-W03', image: './素材/alu-cabin/std-callbuttons/image3.png', price: 0 },
+            { id: 'M-W04', label: '外呼 M-W04', image: './素材/alu-cabin/std-callbuttons/image4.png', price: 0 }
+        ];
+
+        // 轿内操作箱款式（家用电梯系列）
+        const STANDARD_COP_OPTIONS = [
+            { id: 'COP-01', label: '一体式操作箱', image: './素材/alu-cabin/cop/image1.png', price: 0 },
+            { id: 'COP-02', label: '分体式操作箱', image: './素材/alu-cabin/cop/image2.png', price: 0 }
+        ];
+
         const ALUMINUM_BASEBOARD_PRICE = 500;  // 踢脚线灯带单价
+
+        // 吊顶款式（从 吊顶款式.docx 提取，共8款，image1 损坏跳过）
+        const STANDARD_CEILING_OPTIONS = [
+            { id: 'M-D01', label: '吊顶 M-D01', image: './素材/alu-cabin/ceiling/image2.png', price: 0 },
+            { id: 'M-D02', label: '吊顶 M-D02', image: './素材/alu-cabin/ceiling/image3.png', price: 0 },
+            { id: 'M-D03', label: '吊顶 M-D03', image: './素材/alu-cabin/ceiling/image4.png', price: 1000 },
+            { id: 'M-D04', label: '吊顶 M-D04', image: './素材/alu-cabin/ceiling/image5.png', price: 1000 },
+            { id: 'M-D05', label: '吊顶 M-D05', image: './素材/alu-cabin/ceiling/image6.png', price: 1000 },
+            { id: 'M-D06', label: '吊顶 M-D06', image: './素材/alu-cabin/ceiling/image7.png', price: 3000 },
+            { id: 'M-D07', label: '吊顶 M-D07', image: './素材/alu-cabin/ceiling/image8.png', price: 3000 },
+            { id: 'M-D08', label: '吊顶 M-D08', image: './素材/alu-cabin/ceiling/image9.png', price: 3000 }
+        ];
+
+        // 基础岩板款式（全系列不加价）
+        const STANDARD_BASE_SLAB_OPTIONS = [
+            // 基础岩板
+            { id: 'B01', label: 'B01', image: './素材/alu-cabin/baseslab/baseslab_01.png', price: 0 },
+            { id: 'M-B02', label: 'M-B02', image: './素材/alu-cabin/baseslab/baseslab_02.png', price: 0 },
+            { id: 'M-B03', label: 'M-B03', image: './素材/alu-cabin/baseslab/baseslab_03.png', price: 0 },
+            { id: 'M-B04', label: 'M-B04', image: './素材/alu-cabin/baseslab/baseslab_04.png', price: 0 },
+            // 柔性岩板
+            { id: 'KL8231-1', label: 'KL8231-1劳伦金', image: './素材/alu-cabin/baseslab/baseslab_05.png', price: 0 },
+            { id: 'KL8231', label: 'KL8231劳伦金', image: './素材/alu-cabin/baseslab/baseslab_06.png', price: 0 },
+            { id: 'KL8230', label: 'KL8230鱼肚白', image: './素材/alu-cabin/baseslab/baseslab_07.png', price: 0 },
+            { id: 'KL8232', label: 'KL8232鱼肚白', image: './素材/alu-cabin/baseslab/baseslab_08.png', price: 0 },
+            { id: '摩根灰', label: '摩根灰', image: './素材/alu-cabin/baseslab/baseslab_09.png', price: 0 },
+            { id: '莎安娜', label: '莎安娜', image: './素材/alu-cabin/baseslab/baseslab_10.png', price: 0 },
+            { id: '风之莎', label: '风之莎', image: './素材/alu-cabin/baseslab/baseslab_11.png', price: 0 },
+            { id: '金丝银镂', label: '金丝银镂', image: './素材/alu-cabin/baseslab/baseslab_12.png', price: 0 },
+            { id: '凯撒灰', label: '凯撒灰KL8261-1-高光', image: './素材/alu-cabin/baseslab/baseslab_13.png', price: 0 },
+            { id: '凯撒黑', label: '凯撒黑KL8261-高光', image: './素材/alu-cabin/baseslab/baseslab_14.png', price: 0 },
+        ];
+
+        // 素面大理石地面款式
+        const STANDARD_MARBLE_OPTIONS = [
+            { id: 'SY-01', label: 'SY-1', image: './素材/alu-cabin/marble/marble_01.png', price: 1000 },
+            { id: 'SY-02', label: 'SY-2', image: './素材/alu-cabin/marble/marble_02.png', price: 1000 },
+            { id: 'SY-03', label: 'SY-3', image: './素材/alu-cabin/marble/marble_03.png', price: 1000 },
+            { id: 'SY-04', label: 'SY-4', image: './素材/alu-cabin/marble/marble_04.png', price: 1000 },
+            { id: 'SY-05', label: 'SY-5', image: './素材/alu-cabin/marble/marble_05.png', price: 1000 },
+            { id: 'SY-06', label: 'SY-6', image: './素材/alu-cabin/marble/marble_06.png', price: 1000 },
+            { id: 'SY-07', label: 'SY-7', image: './素材/alu-cabin/marble/marble_07.png', price: 1000 },
+            { id: 'SY-08', label: 'SY-8', image: './素材/alu-cabin/marble/marble_08.png', price: 1000 },
+            { id: 'SY-09', label: 'SY-9', image: './素材/alu-cabin/marble/marble_09.png', price: 1000 },
+            { id: 'SY-10', label: 'SY-10', image: './素材/alu-cabin/marble/marble_10.png', price: 1000 },
+            { id: 'SY-11', label: 'SY-11', image: './素材/alu-cabin/marble/marble_11.png', price: 1000 },
+            { id: 'SY-12', label: 'SY-12', image: './素材/alu-cabin/marble/marble_12.png', price: 1000 },
+            { id: 'SY-13', label: 'SY-13', image: './素材/alu-cabin/marble/marble_13.png', price: 1000 },
+            { id: 'SY-14', label: 'SY-14', image: './素材/alu-cabin/marble/marble_14.png', price: 1000 },
+        ];
+
+        // 厅门款式（从 厅门款式.docx 提取）
+        const STANDARD_HALL_DOOR_OPTIONS = [
+            { id: 'M-M01', label: 'M-M01 发纹不锈钢', image: './素材/lobby_door/hall_door_1.png', price: 0 },
+            { id: 'M-M02', label: 'M-M02 黑钛发纹不锈钢', image: './素材/lobby_door/hall_door_2.png', price: 300 },
+            { id: 'M-M03', label: 'M-M03 玫瑰金发纹不锈钢', image: './素材/lobby_door/hall_door_3.png', price: 300 },
+            { id: 'M-M04', label: 'M-M04 木纹艺术板', image: './素材/lobby_door/hall_door_4.png', price: 300 },
+            { id: 'M-M05', label: 'M-M05 黑色艺术板', image: './素材/lobby_door/hall_door_5.png', price: 300 },
+            { id: 'M-M06', label: 'M-M06 发纹蚀刻不锈钢', image: './素材/lobby_door/hall_door_6.png', price: 400 },
+            { id: 'M-M07', label: 'M-M07 玫瑰金蚀刻不锈钢', image: './素材/lobby_door/hall_door_7.png', price: 500 },
+            { id: 'M-M08', label: 'M-M08 玫瑰金镜面蚀刻', image: './素材/lobby_door/hall_door_8.png', price: 600 },
+        ];
 
         function getBasePrice() {
             const cap = Number(document.getElementById('capacity').value || 320);
@@ -673,6 +781,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             // 侧边栏价格项
             document.getElementById('stdPriceItems').classList.toggle('hidden', isAlu);
             document.getElementById('aluPriceItems').classList.toggle('hidden', !isAlu);
+            // 注意：触摸屏/外呼/操作箱已在左侧"轿厢装潢与配置"区域以内联卡片形式展示
             updateAluCabinConfigDisplay();
             updateSummary();
         }
@@ -725,9 +834,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             else if (cwKg > 0) items.push('对重钢板' + cwKg + 'kg');
 
             // 地面
-            const floorVal = Number(document.querySelector('input[name="floorOption"]:checked')?.value || 0);
-            if (floorVal === 1000) items.push('素面大理石地面');
-            else if (floorVal === 1800) items.push('拼花大理石地面');
+            if (selectedFloorType === 'marble') items.push('素面大理石地面' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : ''));
+            else if (selectedFloorType === 'parquet') items.push('拼花大理石地面');
 
             // 附加功能
             document.querySelectorAll('.addon-checkbox:checked').forEach(el => {
@@ -1161,146 +1269,373 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             }
         }
 
-        function initCabinModal() {
+        // ===== 家用梯（标准系列）配置弹窗 =====
+        function initCabinModal(activeTab) {
             const body = document.getElementById('cabinModalBody');
-            const selId = selectedCabinModel ? selectedCabinModel.id : null;
+            activeTab = activeTab || 'cabin';
 
-            // 样册参考图缩略条 — 字符串拼接避免模板嵌套
-            const thumbList = CABIN_PAGE_IMAGES.map(page => {
-                return '<div class="flex-shrink-0 w-14 cursor-pointer cabin-thumb" data-src="' + page.file.replace(/"/g, '&quot;') + '">' +
-                    '<div class="aspect-[3/4] rounded border border-slate-200 overflow-hidden bg-white">' +
-                    '<img src="' + page.file.replace(/"/g, '&quot;') + '" class="w-full h-full object-cover transition" alt="' + page.label.replace(/"/g, '&quot;') + '" loading="lazy">' +
-                    '</div>' +
-                    '</div>';
-            });
-            let html = '<div class="bg-slate-50 rounded-xl p-3">' +
-                '<div class="text-xs font-bold text-slate-500 mb-2"><i class="fa fa-file-image-o text-primary"></i> 样册参考图（点击放大）</div>' +
-                '<div class="flex gap-1.5 overflow-x-auto pb-1 cabin-scroll">' +
-                thumbList.join('') +
-                '</div>' +
-                '</div>';
-
-            // 按价格档次分组，每个款式卡片展示图片 + 编号 + 价格
-            Object.entries(CABIN_MODELS).forEach(([priceStr, tier]) => {
-                const priceNum = Number(priceStr);
-                const hasPrice = priceNum > 0;
-
-                // 使用数组构建代替模板嵌套以避免解析器错误
-                const cardHtmlList = tier.models.map(m => {
-                    const sSel = selId === m.id;
-                    const src = m.image || '';
-                    const borderCls = sSel ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300 hover:bg-blue-50/50';
-                    const innerCls = sSel ? 'bg-blue-50' : '';
-                    const priceCls = hasPrice ? 'text-primary font-semibold' : 'text-green-600';
-                    const priceTxt = hasPrice ? '+' + priceNum : '标配';
-                    // 用字符串拼接避免模板嵌套
-                    let cardHtml = '<div class="cabin-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' + borderCls + '">';
-                    cardHtml += '<div class="cabin-card-inner">';
-                    cardHtml += '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">';
-                    if (src) {
-                        cardHtml += '<img src="' + src.replace(/"/g, '&quot;') + '" class="w-full h-full object-cover cabin-card-img" alt="' + m.id.replace(/"/g, '&quot;') + '" loading="lazy">';
-                    } else {
-                        cardHtml += '<span class="text-slate-300 text-3xl"><i class="fa fa-picture-o"></i></span>';
-                    }
-                    cardHtml += '</div>';
-                    cardHtml += '<div class="p-2 text-center ' + innerCls + '">';
-                    cardHtml += '<div class="text-xs font-bold text-slate-700">' + m.id.replace(/"/g, '&quot;') + '</div>';
-                    cardHtml += '<div class="text-xs ' + priceCls + '">' + priceTxt + '</div>';
-                    cardHtml += '</div>';
-                    cardHtml += '</div>';
-                    cardHtml += '<input type="radio" name="cabinRadio" value="' + m.id.replace(/"/g, '&quot;') + '" data-price="' + priceStr + '" data-image="' + (m.image || '').replace(/"/g, '&quot;') + '" class="hidden"' + (sSel ? ' checked' : '') + '>';
-                    cardHtml += '</div>';
-                    return cardHtml;
-                });
-
-                html += '<div class="border border-slate-200 rounded-xl p-4">' +
-                    '<div class="flex items-center gap-2 mb-3">' +
-                    '<span class="text-base font-bold ' + (hasPrice ? 'text-primary' : 'text-slate-700') + '">' + tier.label.replace(/"/g, '&quot;') + '</span>' +
-                    '<span class="text-xs text-slate-400">' + tier.models.length + '款</span>' +
-                    '</div>' +
-                    '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">' +
-                    cardHtmlList.join('') +
-                    '</div>' +
-                '</div>';
-            });
-
-            // ---- 触摸屏选择 ----
-            const tsSelId = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.id : null;
-            html += '<div class="border border-slate-200 rounded-xl p-4">' +
-                '<div class="flex items-center gap-2 mb-3">' +
-                '<span class="text-base font-bold text-slate-700">触摸屏选择</span>' +
-                '<span class="text-xs text-slate-400">' + ALUMINUM_TOUCHSCREEN_OPTIONS.length + '款</span>' +
-                '</div>' +
-                '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">' +
-                ALUMINUM_TOUCHSCREEN_OPTIONS.map(t => {
-                    const sTs = tsSelId === t.id;
-                    let ch = '<div class="cabin-touch-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
-                        (sTs ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') + '">';
-                    ch += '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">';
-                    ch += '<img src="' + t.image.replace(/"/g, '&quot;') + '" class="w-full h-full object-contain p-2" alt="' + t.label.replace(/"/g, '&quot;') + '" loading="lazy">';
-                    ch += '</div>';
-                    ch += '<div class="p-2 text-center ' + (sTs ? 'bg-blue-50' : '') + '">';
-                    ch += '<div class="text-xs font-bold text-slate-700">' + t.label.replace(/"/g, '&quot;') + '</div>';
-                    ch += '<div class="text-xs ' + (t.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (t.price > 0 ? '+' + t.price : '标配') + '</div>';
-                    ch += '</div></div>';
-                    return ch;
-                }).join('') +
-                '</div></div>';
-
-            body.innerHTML = html;
-
-            // 卡片点击 → 选中（轿厢款式）
-            body.querySelectorAll('.cabin-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    body.querySelectorAll('.cabin-card').forEach(c => {
-                        c.classList.remove('border-blue-500', 'bg-blue-50');
-                        c.classList.add('border-slate-200');
-                        c.querySelector('.cabin-card-inner > div:last-child')?.classList.remove('bg-blue-50');
+            function renderTab(tab) {
+                let html = '';
+                if (tab === 'cabin') {
+                    const selId = selectedCabinModel ? selectedCabinModel.id : null;
+                    // 样册参考图缩略条
+                    const thumbList = CABIN_PAGE_IMAGES.map(page => {
+                        return '<div class="flex-shrink-0 w-14 cursor-pointer cabin-thumb" data-src="' + page.file.replace(/"/g, '&quot;') + '">' +
+                            '<div class="aspect-[3/4] rounded border border-slate-200 overflow-hidden bg-white">' +
+                            '<img src="' + page.file.replace(/"/g, '&quot;') + '" class="w-full h-full object-cover transition" alt="' + page.label.replace(/"/g, '&quot;') + '" loading="lazy">' +
+                            '</div></div>';
                     });
+                    html = '<div class="bg-slate-50 rounded-xl p-3">' +
+                        '<div class="text-xs font-bold text-slate-500 mb-2"><i class="fa fa-file-image-o text-primary"></i> 样册参考图（点击放大）</div>' +
+                        '<div class="flex gap-1.5 overflow-x-auto pb-1 cabin-scroll">' +
+                        thumbList.join('') + '</div></div>';
+
+                    Object.entries(CABIN_MODELS).forEach(([priceStr, tier]) => {
+                        const priceNum = Number(priceStr);
+                        const hasPrice = priceNum > 0;
+                        const cardHtmlList = tier.models.map(m => {
+                            const sSel = selId === m.id;
+                            const src = m.image || '';
+                            const borderCls = sSel ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300 hover:bg-blue-50/50';
+                            const innerCls = sSel ? 'bg-blue-50' : '';
+                            const priceCls = hasPrice ? 'text-primary font-semibold' : 'text-green-600';
+                            const priceTxt = hasPrice ? '+' + priceNum : '标配';
+                            let cardHtml = '<div class="cabin-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' + borderCls + '">';
+                            cardHtml += '<div class="cabin-card-inner">';
+                            cardHtml += '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">';
+                            if (src) {
+                                cardHtml += '<img src="' + src.replace(/"/g, '&quot;') + '" class="w-full h-full object-cover cabin-card-img" alt="' + m.id.replace(/"/g, '&quot;') + '" loading="lazy">';
+                            } else {
+                                cardHtml += '<span class="text-slate-300 text-3xl"><i class="fa fa-picture-o"></i></span>';
+                            }
+                            cardHtml += '</div>';
+                            cardHtml += '<div class="p-2 text-center ' + innerCls + '">';
+                            cardHtml += '<div class="text-xs font-bold text-slate-700">' + m.id.replace(/"/g, '&quot;') + '</div>';
+                            cardHtml += '<div class="text-xs ' + priceCls + '">' + priceTxt + '</div>';
+                            cardHtml += '</div></div></div>';
+                            cardHtml += '<input type="radio" name="cabinRadio" value="' + m.id.replace(/"/g, '&quot;') + '" data-price="' + priceStr + '" data-image="' + (m.image || '').replace(/"/g, '&quot;') + '" class="hidden"' + (sSel ? ' checked' : '') + '>';
+                            return cardHtml;
+                        });
+
+                        html += '<div class="border border-slate-200 rounded-xl p-4 mt-4">' +
+                            '<div class="flex items-center gap-2 mb-3">' +
+                            '<span class="text-base font-bold ' + (hasPrice ? 'text-primary' : 'text-slate-700') + '">' + tier.label.replace(/"/g, '&quot;') + '</span>' +
+                            '<span class="text-xs text-slate-400">' + tier.models.length + '款</span></div>' +
+                            '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">' +
+                            cardHtmlList.join('') + '</div></div>';
+                    });
+                } else if (tab === 'touchscreen') {
+                    const tsSelId = selectedStandardTouchscreen ? selectedStandardTouchscreen.id : null;
+                    html = '<div class="border border-blue-200 rounded-xl p-4 mb-4 bg-blue-50/50"><div class="text-sm text-slate-600"><i class="fa fa-info-circle text-primary mr-1"></i>触摸屏与轿内操作箱二选一</div></div>';
+                    html += '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                        STANDARD_TOUCHSCREEN_OPTIONS.map(t => {
+                            const sTs = tsSelId === t.id;
+                            return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                (sTs ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                '" data-type="touchscreen" data-id="' + t.id + '" data-label="' + t.label + '" data-image="' + t.image + '" data-price="' + t.price + '">' +
+                                '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                '<img src="' + t.image + '" class="w-full h-full object-contain p-2" alt="' + t.label + '" loading="lazy">' +
+                                '</div>' +
+                                '<div class="p-2 text-center ' + (sTs ? 'bg-blue-50' : '') + '">' +
+                                '<div class="text-xs font-bold text-slate-700">' + t.label + '</div>' +
+                                '<div class="text-xs ' + (t.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (t.price > 0 ? '+' + t.price : '默认') + '</div>' +
+                                '</div></div>';
+                        }).join('') + '</div>';
+                } else if (tab === 'callbutton') {
+                    const cbSelId = selectedStandardCallButton ? selectedStandardCallButton.id : null;
+                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                        STANDARD_CALL_BUTTON_OPTIONS.map(b => {
+                            const sCb = cbSelId === b.id;
+                            return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                (sCb ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                '" data-type="callbutton" data-id="' + b.id + '" data-label="' + b.label + '" data-image="' + b.image + '" data-price="' + b.price + '">' +
+                                '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                '<img src="' + b.image + '" class="w-full h-full object-contain p-2" alt="' + b.label + '" loading="lazy">' +
+                                '</div>' +
+                                '<div class="p-2 text-center ' + (sCb ? 'bg-blue-50' : '') + '">' +
+                                '<div class="text-xs font-bold text-slate-700">' + b.label + '</div>' +
+                                '<div class="text-xs ' + (b.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (b.price > 0 ? '+' + b.price : '默认') + '</div>' +
+                                '</div></div>';
+                        }).join('') + '</div>';
+                } else if (tab === 'cop') {
+                    const copSelId = selectedStandardCOP ? selectedStandardCOP.id : null;
+                    html = '<div class="border border-blue-200 rounded-xl p-4 mb-4 bg-blue-50/50"><div class="text-sm text-slate-600"><i class="fa fa-info-circle text-primary mr-1"></i>轿内操作箱与触摸屏二选一</div></div>';
+                    html += '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                        STANDARD_COP_OPTIONS.map(c => {
+                            const sCop = copSelId === c.id;
+                            const imgSrc = c.images ? c.images[0] : c.image;
+                            return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                (sCop ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                '" data-type="cop" data-id="' + c.id + '" data-label="' + c.label + '" data-image="' + (c.images ? c.images[0] : c.image) + '" data-price="' + (c.price||0) + '">' +
+                                '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                '<img src="' + imgSrc + '" class="w-full h-full object-contain p-2" alt="' + c.label + '" loading="lazy">' +
+                                '</div>' +
+                                '<div class="p-2 text-center ' + (sCop ? 'bg-blue-50' : '') + '">' +
+                                '<div class="text-xs font-bold text-slate-700">' + c.label + '</div>' +
+                                '<div class="text-xs text-green-600">标配</div>' +
+                                '</div></div>';
+                        }).join('') + '</div>';
+                } else if (tab === 'ceiling') {
+                    const clSelId = selectedStandardCeiling ? selectedStandardCeiling.id : null;
+                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                        STANDARD_CEILING_OPTIONS.map(c => {
+                            const sCl = clSelId === c.id;
+                            return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                (sCl ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                '" data-type="ceiling" data-id="' + c.id + '" data-label="' + c.label + '" data-image="' + c.image + '" data-price="' + c.price + '">' +
+                                '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                '<img src="' + c.image + '" class="w-full h-full object-contain p-1" alt="' + c.label + '" loading="lazy">' +
+                                '</div>' +
+                                '<div class="p-2 text-center ' + (sCl ? 'bg-blue-50' : '') + '">' +
+                                '<div class="text-sm font-bold">' + c.label + '</div>' +
+                                '<div class="text-xs ' + (c.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (c.price > 0 ? '+' + c.price + '元' : '标配') + '</div>' +
+                                '</div></div>';
+                        }).join('') + '</div>';
+                } else if (tab === 'baseslab') {
+                    const bsSelId = selectedStandardBaseSlab ? selectedStandardBaseSlab.id : null;
+                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                        STANDARD_BASE_SLAB_OPTIONS.map(b => {
+                            const sBs = bsSelId === b.id;
+                            return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                (sBs ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                '" data-type="baseslab" data-id="' + b.id + '" data-label="' + b.label + '" data-image="' + b.image + '" data-price="' + b.price + '">' +
+                                '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                '<img src="' + b.image + '" class="w-full h-full object-contain p-1" alt="' + b.label + '" loading="lazy">' +
+                                '</div>' +
+                                '<div class="p-2 text-center ' + (sBs ? 'bg-blue-50' : '') + '">' +
+                                '<div class="text-sm font-bold">' + b.label + '</div>' +
+                                '<div class="text-xs ' + (b.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (b.price > 0 ? '+' + b.price + '元' : '标配') + '</div>' +
+                                '</div></div>';
+                        }).join('') + '</div>';
+                } else if (tab === 'ground') {
+                    const floorTypes = [
+                        { id: 'standard', label: '标准地面', desc: '基础配置', price: 0 },
+                        { id: 'marble', label: '素面大理石地面', desc: '加价 1000 元/款', price: 1000 },
+                        { id: 'parquet', label: '拼花大理石地面', desc: '加价 1800 元', price: 1800 }
+                    ];
+                    html = '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">' +
+                        floorTypes.map(ft => {
+                            const sFt = selectedFloorType === ft.id;
+                            return '<div class="std-ground-card rounded-xl border-2 cursor-pointer transition p-4 ' +
+                                (sFt ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                '" data-floor-type="' + ft.id + '" data-price="' + ft.price + '">' +
+                                '<div class="font-medium text-base">' + ft.label + '</div>' +
+                                '<div class="text-sm text-slate-500 mt-1">' + ft.desc + '</div>' +
+                                (sFt && ft.id === 'marble' && selectedMarbleStyle ? '<div class="text-xs text-primary mt-2"><i class="fa fa-check-circle-o"></i> 已选：' + selectedMarbleStyle.label + '</div>' : '') +
+                                '</div>';
+                        }).join('') + '</div>';
+                    // 大理石款式选择（仅在选择素面大理石时显示）
+                    if (selectedFloorType === 'marble') {
+                        const mSelId = selectedMarbleStyle ? selectedMarbleStyle.id : null;
+                        html += '<div class="border-t border-slate-200 pt-4"><div class="text-sm font-bold text-slate-600 mb-3"><i class="fa fa-picture-o text-primary mr-1"></i>选择大理石款式</div>' +
+                            '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                            STANDARD_MARBLE_OPTIONS.map(m => {
+                                const sM = mSelId === m.id;
+                                return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                    (sM ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                    '" data-type="marble" data-id="' + m.id + '" data-label="' + m.label + '" data-image="' + m.image + '" data-price="' + m.price + '">' +
+                                    '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                    '<img src="' + m.image + '" class="w-full h-full object-contain p-1" alt="' + m.label + '" loading="lazy">' +
+                                    '</div>' +
+                                    '<div class="p-2 text-center ' + (sM ? 'bg-blue-50' : '') + '">' +
+                                    '<div class="text-sm font-bold">' + m.label + '</div>' +
+                                    '<div class="text-xs text-primary font-semibold">+' + m.price + '元</div>' +
+                                    '</div></div>';
+                            }).join('') + '</div></div>';
+                    }
+                } else if (tab === 'halldoor') {
+                    const hdSelId = selectedHallDoorStyle ? selectedHallDoorStyle.id : null;
+                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                        STANDARD_HALL_DOOR_OPTIONS.map(h => {
+                            const sH = hdSelId === h.id;
+                            return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                (sH ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                '" data-type="halldoor" data-id="' + h.id + '" data-label="' + h.label + '" data-image="' + h.image + '" data-price="' + h.price + '">' +
+                                '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                '<img src="' + h.image + '" class="w-full h-full object-contain p-1" alt="' + h.label + '" loading="lazy">' +
+                                '</div>' +
+                                '<div class="p-2 text-center ' + (sH ? 'bg-blue-50' : '') + '">' +
+                                '<div class="text-sm font-bold">' + h.label + '</div>' +
+                                '<div class="text-xs ' + (h.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (h.price > 0 ? '+' + h.price + '元/道' : '标配') + '</div>' +
+                                '</div></div>';
+                        }).join('') + '</div>';
+                }
+                return html;
+            }
+
+            // Tab switching visual
+            const tabs = document.querySelectorAll('#cabinModalTabs .std-tab-btn');
+            tabs.forEach(btn => {
+                btn.classList.remove('border-primary', 'text-primary');
+                btn.classList.add('border-transparent', 'text-slate-500');
+                if (btn.dataset.tab === activeTab) {
+                    btn.classList.remove('border-transparent', 'text-slate-500');
+                    btn.classList.add('border-primary', 'text-primary');
+                }
+            });
+
+            body.innerHTML = renderTab(activeTab);
+
+            // Card clicks — save state immediately
+            body.querySelectorAll('.std-sel-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const type = card.dataset.type;
+                    const data = { id: card.dataset.id, label: card.dataset.label, image: card.dataset.image, price: Number(card.dataset.price || 0) };
+
+                    if (type === 'touchscreen' || type === 'callbutton' || type === 'cop' || type === 'ceiling' || type === 'baseslab' || type === 'marble' || type === 'halldoor') {
+                        // Single selection: clear others in same group
+                        body.querySelectorAll('.std-sel-card[data-type="' + type + '"]').forEach(c => {
+                            c.classList.remove('border-blue-500', 'bg-blue-50');
+                            c.classList.add('border-slate-200');
+                            const ci = c.querySelector('div:last-child');
+                            if (ci) ci.classList.remove('bg-blue-50');
+                        });
+                    }
+
                     card.classList.remove('border-slate-200');
                     card.classList.add('border-blue-500', 'bg-blue-50');
-                    const inner = card.querySelector('.cabin-card-inner > div:last-child');
+                    const inner = card.querySelector('div:last-child');
                     if (inner) inner.classList.add('bg-blue-50');
-                    card.querySelector('input[type="radio"]').checked = true;
-                });
-            });
 
-            // 触摸屏卡片点击
-            body.querySelectorAll('.cabin-touch-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    body.querySelectorAll('.cabin-touch-card').forEach(c => {
-                        c.classList.remove('border-blue-500', 'bg-blue-50');
-                        c.classList.add('border-slate-200');
-                        const cinner = c.querySelector('div:last-child');
-                        if (cinner) cinner.classList.remove('bg-blue-50');
-                    });
-                    card.classList.remove('border-slate-200');
-                    card.classList.add('border-blue-500', 'bg-blue-50');
-                    const cinner = card.querySelector('div:last-child');
-                    if (cinner) cinner.classList.add('bg-blue-50');
-                    // 查找对应选项
-                    const idx = Array.from(card.parentElement.children).indexOf(card);
-                    if (idx >= 0 && idx < ALUMINUM_TOUCHSCREEN_OPTIONS.length) {
-                        selectedAluminumTouchscreen = ALUMINUM_TOUCHSCREEN_OPTIONS[idx];
+                    // Save state
+                    if (type === 'touchscreen') {
+                        selectedStandardTouchscreen = data;
+                        // 二选一：清除COP
+                        selectedStandardCOP = null;
+                    } else if (type === 'callbutton') {
+                        selectedStandardCallButton = data;
+                    } else if (type === 'cop') {
+                        selectedStandardCOP = data;
+                        // 二选一：清除触摸屏
+                        selectedStandardTouchscreen = null;
+                    } else if (type === 'ceiling') {
+                        selectedStandardCeiling = data;
+                    } else if (type === 'baseslab') {
+                        selectedStandardBaseSlab = data;
+                    } else if (type === 'marble') {
+                        selectedMarbleStyle = data;
+                        selectedFloorType = 'marble';
+                    } else if (type === 'halldoor') {
+                        selectedHallDoorStyle = data;
                     }
                 });
+                // Double-click to enlarge
+                card.addEventListener('dblclick', () => {
+                    openCabinLightbox(card.dataset.image);
+                });
             });
 
-            // 缩略图点击 → 放大
-            body.querySelectorAll('.cabin-thumb').forEach(el => {
-                el.addEventListener('click', () => {
-                    openCabinLightbox(el.dataset.src);
+            // Ground type card handler
+            body.querySelectorAll('.std-ground-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const ft = card.dataset.floorType;
+                    selectedFloorType = ft;
+                    if (ft !== 'marble') {
+                        selectedMarbleStyle = null;
+                    } else if (!selectedMarbleStyle) {
+                        selectedMarbleStyle = STANDARD_MARBLE_OPTIONS[0];
+                    }
+                    const activeTab = 'ground';
+                    body.innerHTML = renderTab(activeTab);
+                    initCabinModal(activeTab);
                 });
+            });
+
+            // 轿厢款式卡片点击（特殊处理，因为使用radio）
+            if (activeTab === 'cabin') {
+                body.querySelectorAll('.cabin-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        body.querySelectorAll('.cabin-card').forEach(c => {
+                            c.classList.remove('border-blue-500', 'bg-blue-50');
+                            c.classList.add('border-slate-200');
+                            c.querySelector('.cabin-card-inner > div:last-child')?.classList.remove('bg-blue-50');
+                        });
+                        card.classList.remove('border-slate-200');
+                        card.classList.add('border-blue-500', 'bg-blue-50');
+                        const inner = card.querySelector('.cabin-card-inner > div:last-child');
+                        if (inner) inner.classList.add('bg-blue-50');
+                        card.querySelector('input[type="radio"]').checked = true;
+                    });
+                    card.addEventListener('dblclick', () => {
+                        const img = card.querySelector('img');
+                        if (img) openCabinLightbox(img.src);
+                    });
+                });
+                // 缩略图点击
+                body.querySelectorAll('.cabin-thumb').forEach(el => {
+                    el.addEventListener('click', () => {
+                        openCabinLightbox(el.dataset.src);
+                    });
+                });
+            }
+
+            // Tab clicks
+            tabs.forEach(btn => {
+                btn.onclick = function() { initCabinModal(btn.dataset.tab); };
             });
         }
 
-        function openCabinModal() {
-            initCabinModal();
+        function openCabinModal(tab) {
+            initCabinModal(tab || 'cabin');
+            const isSimple = tab && ['touchscreen', 'callbutton', 'cop'].includes(tab);
+            const tabBar = document.getElementById('cabinModalTabs');
+            tabBar.style.display = isSimple ? 'none' : '';
+            if (isSimple) {
+                const titleMap = { touchscreen: '触摸屏选择', callbutton: '外呼款式选择', cop: '轿内操作箱选择' };
+                document.querySelector('#cabinModal .text-lg.font-bold').textContent = titleMap[tab] || '家用电梯配置选择';
+            } else {
+                document.querySelector('#cabinModal .text-lg.font-bold').textContent = '家用电梯配置选择';
+            }
             document.getElementById('cabinModal').classList.remove('hidden');
         }
 
         function closeCabinModal() {
             document.getElementById('cabinModal').classList.add('hidden');
+        }
+
+        // ===== 标准系列侧边栏选择渲染 =====
+        // ===== 更新配置摘要显示 =====
+        function renderStdDecorationOptions() {
+            var tsEl = document.getElementById('stdTouchscreenDisplay');
+            var cbEl = document.getElementById('stdCallButtonDisplay');
+            var copEl = document.getElementById('stdCOPDisplay');
+            var clEl = document.getElementById('stdCeilingDisplay');
+            var bsEl = document.getElementById('stdBaseSlabDisplay');
+
+            if (tsEl) {
+                tsEl.innerHTML = selectedStandardTouchscreen
+                    ? selectedStandardTouchscreen.label
+                    : '<span class="text-amber-600">未选</span>';
+            }
+            if (cbEl) {
+                cbEl.innerHTML = selectedStandardCallButton
+                    ? selectedStandardCallButton.label
+                    : '<span class="text-slate-400">未选</span>';
+            }
+            if (copEl) {
+                copEl.innerHTML = selectedStandardCOP
+                    ? selectedStandardCOP.label
+                    : '<span class="text-slate-400">未选</span>';
+            }
+            // 吊顶和岩板在 modal confirm 中已更新，这里只需兜底
+            if (clEl && !clEl.innerHTML.trim()) {
+                clEl.innerHTML = '标配（默认）';
+            }
+            if (bsEl && !bsEl.innerHTML.trim()) {
+                bsEl.innerHTML = '标配（默认）';
+            }
+            // 地面显示
+            var gdEl = document.getElementById('stdGroundDisplay');
+            if (gdEl) {
+                if (selectedFloorType === 'standard') gdEl.innerHTML = '标准地面';
+                else if (selectedFloorType === 'marble') gdEl.innerHTML = '素面大理石' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : '');
+                else if (selectedFloorType === 'parquet') gdEl.innerHTML = '拼花大理石地面';
+            }
+            // 厅门款式显示
+            var hdEl = document.getElementById('stdHallDoorDisplay');
+            if (hdEl) {
+                hdEl.innerHTML = selectedHallDoorStyle ? selectedHallDoorStyle.label : '<span class="text-slate-400">未选</span>';
+            }
         }
 
         function currentDoorPrice() {
@@ -1344,7 +1679,9 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         }
 
         function currentFloorPrice() {
-            return Number(document.querySelector('input[name="floorOption"]:checked')?.value || 0);
+            if (selectedFloorType === 'marble') return selectedMarbleStyle ? selectedMarbleStyle.price : 1000;
+            if (selectedFloorType === 'parquet') return 1800;
+            return 0;
         }
 
         function currentAddons() {
@@ -1422,8 +1759,11 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const aluCallButtonLabel = selectedAluminumCallButton ? selectedAluminumCallButton.label : '未选择';
             // 15. 踢脚线灯带
             const aluBaseboardPrice = selectedAluminumBaseboardCount * ALUMINUM_BASEBOARD_PRICE;
+            // 16. 厅门款式加价
+            const hallDoorPriceAlu = selectedHallDoorStyle ? selectedHallDoorStyle.price : 0;
+            const hallDoorLabelAlu = selectedHallDoorStyle ? selectedHallDoorStyle.label : '未选择';
             // 总和
-            const subtotal = basePrice + floorSurcharge + framePrice + glassPrice + aluminumCabinPrice + aluminumDoorPrice + doorPrice + throughDoorPrice + counterweightPrice + modelTypePrice + floorPrice + addonsPrice + aluCabinStylePrice + aluTouchscreenPrice + aluCallButtonPrice + aluBaseboardPrice + heightSurcharge;
+            const subtotal = basePrice + floorSurcharge + framePrice + glassPrice + aluminumCabinPrice + aluminumDoorPrice + doorPrice + throughDoorPrice + counterweightPrice + modelTypePrice + floorPrice + addonsPrice + aluCabinStylePrice + aluTouchscreenPrice + aluCallButtonPrice + aluBaseboardPrice + heightSurcharge + hallDoorPriceAlu;
             return {
                 subtotal, total: subtotal,
                 basePrice, floorSurcharge,
@@ -1446,6 +1786,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 aluTouchscreenPrice, aluTouchscreenLabel,
                 aluCallButtonPrice, aluCallButtonLabel,
                 aluBaseboardPrice,
+                hallDoorPrice: hallDoorPriceAlu, hallDoorLabel: hallDoorLabelAlu,
                 aluColorLabel: selectedAluminumColor ? selectedAluminumColor.label : '未选择'
             };
         }
@@ -1488,9 +1829,22 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const pitDepth = Number(document.getElementById('pitDepth').value || 0);
             const topHeight = Number(document.getElementById('topHeight').value || 0);
             const shaftTotalHeight = pitDepth + liftHeight + topHeight;
-            const aluTouchscreenPrice = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.price : 0;
-            const aluTouchscreenLabel = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.label : '未选择';
-            const subtotal = basePrice + speedPrice + doorPrice + throughDoorPrice + counterweightPrice + decorationPrice + cabinPrice + modelTypePrice + floorPrice + addonsPrice + floorSurcharge + heightSurcharge + aluTouchscreenPrice;
+            const aluTouchscreenPrice = selectedStandardTouchscreen ? selectedStandardTouchscreen.price : 0;
+            const aluTouchscreenLabel = selectedStandardTouchscreen ? selectedStandardTouchscreen.label : '未选择';
+            const stdCallButtonPrice = selectedStandardCallButton ? selectedStandardCallButton.price : 0;
+            const stdCallButtonLabel = selectedStandardCallButton ? selectedStandardCallButton.label : '未选择';
+            const stdCOPPrice = selectedStandardCOP ? selectedStandardCOP.price : 0;
+            const stdCOPLabel = selectedStandardCOP ? selectedStandardCOP.label : '未选择';
+            const stdCeilingPrice = selectedStandardCeiling ? selectedStandardCeiling.price : 0;
+            const stdCeilingLabel = selectedStandardCeiling ? selectedStandardCeiling.label : '未选择';
+            const stdBaseSlabPrice = selectedStandardBaseSlab ? selectedStandardBaseSlab.price : 0;
+            const stdBaseSlabLabel = selectedStandardBaseSlab ? selectedStandardBaseSlab.label : '未选择';
+            const hallDoorPrice = selectedHallDoorStyle ? selectedHallDoorStyle.price : 0;
+            const hallDoorLabel = selectedHallDoorStyle ? selectedHallDoorStyle.label : '未选择';
+            const stdOperationMode = selectedStandardTouchscreen
+                ? ('触摸屏：' + selectedStandardTouchscreen.label)
+                : (selectedStandardCOP ? '轿内操作箱：' + selectedStandardCOP.label : '未选择');
+            const subtotal = basePrice + speedPrice + doorPrice + throughDoorPrice + counterweightPrice + decorationPrice + cabinPrice + modelTypePrice + floorPrice + addonsPrice + floorSurcharge + heightSurcharge + aluTouchscreenPrice + stdCallButtonPrice + stdCOPPrice + stdCeilingPrice + stdBaseSlabPrice + hallDoorPrice;
             return {
                 subtotal, total: subtotal,
                 basePrice, speedPrice, doorPrice,
@@ -1504,7 +1858,15 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 floors, stops: Number(document.getElementById('stops').value || 2),
                 landingDoors: ld, liftHeight: liftHeight / 1000, floorHeights, heightSurcharge,
                 pitDepth, topHeight, shaftTotalHeight,
-                aluTouchscreenPrice, aluTouchscreenLabel
+                aluTouchscreenPrice, aluTouchscreenLabel,
+                stdCallButtonPrice, stdCallButtonLabel,
+                stdCOPPrice, stdCOPLabel,
+                stdCeilingPrice, stdCeilingLabel,
+                stdBaseSlabPrice, stdBaseSlabLabel,
+                marbleStylePrice: selectedMarbleStyle ? selectedMarbleStyle.price : 0,
+                marbleStyleLabel: selectedMarbleStyle ? selectedMarbleStyle.label : '未选择',
+                hallDoorPrice, hallDoorLabel,
+                stdOperationMode
             };
         }
 
@@ -1604,7 +1966,10 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         }
 
         function selectedFloorLabel() {
-            return document.querySelector('input[name="floorOption"]:checked').parentElement.innerText.trim().split('\n')[0];
+            if (selectedFloorType === 'standard') return '标准地面';
+            if (selectedFloorType === 'marble') return '素面大理石地面' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : '');
+            if (selectedFloorType === 'parquet') return '拼花大理石地面';
+            return '标准地面';
         }
 
         function selectedDecorationLabel() {
@@ -1695,7 +2060,12 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 ${price.throughDoorPrice > 0 ? `<div>贯通门：<span class="font-semibold">${price.throughLabel}（轿门¥${price.throughCarPrice}${price.throughLandingPrice > 0 ? ' + 厅门¥' + price.throughLandingPrice + '（' + price.extraDoors + '道）' : ''}）</span></div>` : ''}
                 ${price.counterweightPrice > 0 ? `<div>对重钢板：<span class="font-semibold">${price.cwFull ? '全钢板对重' : price.cwKg + 'kg'} — ${formatPrice(price.counterweightPrice)}</span></div>` : ''}
                 ${price.cabinModel ? `<div>轿厢装潢：<span class="font-semibold">${price.cabinModel.id}</span></div>` : '<div>轿厢装潢：<span class="font-semibold">标配（304发纹不锈钢）</span></div>'}
-                <div>触摸屏：<span class="font-semibold">${price.aluTouchscreenLabel}</span></div>
+                <div>操作方式：<span class="font-semibold">${price.stdOperationMode}</span></div>
+                <div>外呼款式：<span class="font-semibold">${price.stdCallButtonLabel}</span></div>
+                <div>吊顶款式：<span class="font-semibold">${price.stdCeilingLabel}</span>${price.stdCeilingPrice > 0 ? ' <span class="text-xs text-primary">(+' + price.stdCeilingPrice + '元)</span>' : ''}</div>
+                <div>基础岩板：<span class="font-semibold">${price.stdBaseSlabLabel}</span>${price.stdBaseSlabPrice > 0 ? ' <span class="text-xs text-primary">(+' + price.stdBaseSlabPrice + '元)</span>' : ''}</div>
+                <div>地面：<span class="font-semibold">${selectedFloorLabel()}</span>${price.floorPrice > 0 ? ' <span class="text-xs text-primary">(+' + price.floorPrice + '元)</span>' : ''}</div>
+                <div>厅门款式：<span class="font-semibold">${price.hallDoorLabel}</span>${price.hallDoorPrice > 0 ? ' <span class="text-xs text-primary">(+' + price.hallDoorPrice + '元/道)</span>' : ''}</div>
                 <div class="text-xs text-slate-400 mt-1 leading-5">标准配置：轿厢/门板/门套304发纹不锈钢厚1.2mm，停电应急ARD，一键通话，断码液晶显示，中分门，PVC地坪/岩板，无油导靴，10.1/10.4寸触模屏</div>
                 <div class="mt-3 pt-3 border-t border-slate-100">
                     <span class="text-slate-400 uppercase tracking-widest text-xs font-bold block mb-2">标配参考图</span>
@@ -1719,6 +2089,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 ${price.counterweightPrice > 0 ? `<tr class="border-b border-slate-100"><td class="py-3 pr-4">对重钢板（${price.cwFull ? '全钢板对重' : price.cwKg + 'kg'}）</td><td class="py-3 text-right">${formatPrice(price.counterweightPrice)}</td></tr>` : ''}
                 ${price.modelTypePrice > 0 ? `<tr class="border-b border-slate-100"><td class="py-3 pr-4">曳引方式升级（${price.modelTypeLabel}）</td><td class="py-3 text-right">${formatPrice(price.modelTypePrice)}</td></tr>` : ''}
                 ${price.doorPrice > 0 ? `<tr class="border-b border-slate-100"><td class="py-3 pr-4">开门结构（${selectedDoorLabel()}）</td><td class="py-3 text-right">${formatPrice(price.doorPrice)}</td></tr>` : ''}
+                ${price.hallDoorPrice > 0 ? '<tr class="border-b border-slate-100"><td class="py-3 pr-4">厅门款式（' + price.hallDoorLabel + '）</td><td class="py-3 text-right">' + formatPrice(price.hallDoorPrice) + '</td></tr>' : ''}
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">地面加价</td><td class="py-3 text-right">${formatPrice(price.floorPrice)}</td></tr>
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">附加功能加价</td><td class="py-3 text-right">${formatPrice(price.addonsPrice)}</td></tr>
                 <tr class="border-b border-slate-100 font-semibold"><td class="py-3 pr-4">合计</td><td class="py-3 text-right">${formatPrice(price.subtotal)}</td></tr>
@@ -1734,6 +2105,10 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">层站加价（${price.floors - 2 > 0 ? `${price.floors - 2}层 × ${FLOOR_SURCHARGE}` : '0'})</td><td class="py-3 text-right">${formatPrice(price.floorSurcharge)}</td></tr>
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">轿厢装潢${price.cabinModel ? '（' + price.cabinModel.id + '）' : '（标配）'}</td><td class="py-3 text-right">${formatPrice(price.cabinPrice)}</td></tr>
                 ${price.aluTouchscreenPrice > 0 ? '<tr class="border-b border-slate-100"><td class="py-3 pr-4">触摸屏（' + price.aluTouchscreenLabel + '）</td><td class="py-3 text-right">' + formatPrice(price.aluTouchscreenPrice) + '</td></tr>' : ''}
+                ${price.stdCallButtonPrice > 0 ? '<tr class="border-b border-slate-100"><td class="py-3 pr-4">外呼（' + price.stdCallButtonLabel + '）</td><td class="py-3 text-right">' + formatPrice(price.stdCallButtonPrice) + '</td></tr>' : ''}
+                ${price.stdCeilingPrice > 0 ? '<tr class="border-b border-slate-100"><td class="py-3 pr-4">吊顶（' + price.stdCeilingLabel + '）</td><td class="py-3 text-right">' + formatPrice(price.stdCeilingPrice) + '</td></tr>' : ''}
+                ${price.stdBaseSlabPrice > 0 ? '<tr class="border-b border-slate-100"><td class="py-3 pr-4">基础岩板（' + price.stdBaseSlabLabel + '）</td><td class="py-3 text-right">' + formatPrice(price.stdBaseSlabPrice) + '</td></tr>' : ''}
+                ${price.hallDoorPrice > 0 ? '<tr class="border-b border-slate-100"><td class="py-3 pr-4">厅门款式（' + price.hallDoorLabel + '）</td><td class="py-3 text-right">' + formatPrice(price.hallDoorPrice) + '</td></tr>' : ''}
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">地面/观光加价</td><td class="py-3 text-right">${formatPrice(price.floorPrice)}</td></tr>
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">附加功能加价</td><td class="py-3 text-right">${formatPrice(price.addonsPrice)}</td></tr>
                 <tr class="border-b border-slate-100 font-semibold"><td class="py-3 pr-4">合计</td><td class="py-3 text-right">${formatPrice(price.subtotal)}</td></tr>
@@ -1778,6 +2153,10 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                         ` : `
                         <div class="rounded-xl bg-slate-50 p-4">装饰方案：<span class="font-semibold">${selectedDecorationLabel()}</span></div>
                         ${price.cabinModel ? `<div class="rounded-xl bg-slate-50 p-4">轿厢装潢：<span class="font-semibold">${price.cabinModel.id}</span><br><span class="text-xs text-slate-400">${formatPrice(price.cabinPrice)}</span>${price.cabinModel.image ? `<br><img src="${price.cabinModel.image}" class="mt-2 w-24 h-24 object-cover rounded-lg border border-slate-200">` : ''}</div>` : `<div class="rounded-xl bg-slate-50 p-4 md:col-span-2">标准配置：<span class="font-semibold">304发纹不锈钢</span><br><span class="text-xs text-slate-400">轿厢/门板/门套304发纹不锈钢，停电应急ARD，一键通话，断码液晶显示，中分门，PVC地坪，无油导靴，10.1寸触模屏</span><br><img src="${STANDARD_CONFIG_IMAGE}" class="mt-2 w-24 h-24 object-cover rounded-lg border border-slate-200"></div>`}
+                        <div class="rounded-xl bg-slate-50 p-4">操作方式：<span class="font-semibold">${price.stdOperationMode}</span><br><span class="text-xs text-slate-400">${price.aluTouchscreenPrice > 0 ? '+' + price.aluTouchscreenPrice + '元' : '默认'}</span></div>
+                        <div class="rounded-xl bg-slate-50 p-4">外呼款式：<span class="font-semibold">${price.stdCallButtonLabel}</span><br><span class="text-xs text-slate-400">${price.stdCallButtonPrice > 0 ? '+' + price.stdCallButtonPrice + '元' : '默认'}</span></div>
+                        <div class="rounded-xl bg-slate-50 p-4">吊顶款式：<span class="font-semibold">${price.stdCeilingLabel}</span><br><span class="text-xs text-slate-400">${price.stdCeilingPrice > 0 ? '+' + price.stdCeilingPrice + '元' : '标配'}</span></div>
+                        <div class="rounded-xl bg-slate-50 p-4">基础岩板：<span class="font-semibold">${price.stdBaseSlabLabel}</span><br><span class="text-xs text-slate-400">${price.stdBaseSlabPrice > 0 ? '+' + price.stdBaseSlabPrice + '元' : '标配'}</span></div>
                         <div class="rounded-xl bg-slate-50 p-4">速度：<span class="font-semibold">${getSpeedLabel()}</span></div>
                         `}
                         <div class="rounded-xl bg-slate-50 p-4">地面：<span class="font-semibold">${selectedFloorLabel()}</span></div>
@@ -2003,8 +2382,9 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
 
                 // 8. 地面
                 if (price.floorPrice > 0) {
-                    const fv = Number(document.querySelector('input[name="floorOption"]:checked')?.value || 0);
-                    const fl = fv === 1000 ? '素面大理石地面' : fv === 1800 ? '拼花大理石地面' : '地面';
+                    let fl = '地面';
+                    if (selectedFloorType === 'marble') fl = '素面大理石地面' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : '');
+                    else if (selectedFloorType === 'parquet') fl = '拼花大理石地面';
                     detailItems.push([fl, price.floorPrice / 10000]);
                 }
 
@@ -2017,6 +2397,14 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 if (price.aluTouchscreenPrice > 0) {
                     detailItems.push(['触摸屏（' + price.aluTouchscreenLabel + '）', price.aluTouchscreenPrice / 10000]);
                 }
+                // 11. 外呼
+                if (price.stdCallButtonPrice > 0) {
+                    detailItems.push(['外呼（' + price.stdCallButtonLabel + '）', price.stdCallButtonPrice / 10000]);
+                }
+                // 12. 厅门款式
+                if (price.hallDoorPrice > 0) {
+                    detailItems.push(['厅门款式（' + price.hallDoorLabel + '）', price.hallDoorPrice / 10000]);
+                }
             } else {
                 // 铝合金系列：轿厢装潢
                 const acw = (price.aluminumCabinPrice || 0) / 10000;
@@ -2026,7 +2414,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                     (price.aluminumDoorPrice || 0) + (price.modelTypePrice || 0) +
                     (price.floorPrice || 0) + (price.aluCabinStylePrice || 0) +
                     (price.aluTouchscreenPrice || 0) + (price.aluCallButtonPrice || 0) +
-                    (price.aluBaseboardPrice || 0)
+                    (price.aluBaseboardPrice || 0) + (price.hallDoorPrice || 0)
                 ) / 10000;
                 if (aluOther > 0.0001) detailItems.push(['其他配置', aluOther]);
             }
@@ -2367,7 +2755,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             ];
             TERMS.forEach(function(t) {
                 children.push(cp(t.title,{bold:true,size:20,before:100,after:30}));
-                t.body.split('\\n').forEach(function(line) {
+                t.body.split('\n').forEach(function(line) {
                     if (line.trim()) children.push(cp(line.trim(),{size:18,line:340}));
                 });
             });
@@ -2444,7 +2832,9 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             document.querySelector('input[name="throughDoor"][value="none"]').checked = true;
             document.getElementById('counterweightKg').value = 0;
             document.getElementById('counterweightFull').checked = false;
-            document.querySelector('input[name="floorOption"][value="0"]').checked = true;
+            selectedFloorType = 'standard';
+            selectedMarbleStyle = null;
+            selectedHallDoorStyle = null;
             document.querySelectorAll('.addon-checkbox').forEach((el) => { el.checked = false; });
             document.querySelector('input[name="aluGrade"][value="economy"]').checked = true;
             selectedAluminumGrade = 'economy';
@@ -2461,8 +2851,20 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             document.getElementById('aluCabinConfigDisplay').innerHTML = '<div class="text-slate-500">请选择轿厢款式、铝合金颜色、触摸屏及外呼</div>';
             selectedDecoration = 0;
             selectedCabinModel = null;
-            const tsLabel2 = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.label : '';
-            document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）' + (tsLabel2 ? ' · ' + tsLabel2 : '');
+            // 重置家用梯独立配置状态
+            selectedStandardTouchscreen = STANDARD_TOUCHSCREEN_OPTIONS[0];
+            selectedStandardCallButton = STANDARD_CALL_BUTTON_OPTIONS[0];
+            selectedStandardCOP = null;
+            document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）';
+            // 重置吊顶、基础岩板
+            selectedStandardCeiling = null;
+            selectedStandardBaseSlab = null;
+            document.getElementById('stdCeilingDisplay').innerHTML = '标配（默认）';
+            document.getElementById('stdBaseSlabDisplay').innerHTML = '标配（默认）';
+            document.getElementById('stdGroundDisplay').innerHTML = '标准地面';
+            document.getElementById('stdHallDoorDisplay').innerHTML = '<span class="text-slate-400">未选</span>';
+            // 更新配置摘要
+            renderStdDecorationOptions();
             // 重新初始化每层高度输入
             updateFloorHeightInputs();
             onProductSeriesChange();
@@ -2552,7 +2954,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         // 初始化每层高度输入
         updateFloorHeightInputs();
 
-        document.getElementById('cabinSelectBtn').addEventListener('click', openCabinModal);
+        document.getElementById('cabinSelectBtn').addEventListener('click', () => openCabinModal('cabin'));
         document.getElementById('cabinModalClose').addEventListener('click', closeCabinModal);
         document.getElementById('cabinModalCancel').addEventListener('click', closeCabinModal);
         document.getElementById('cabinModal').addEventListener('click', (e) => {
@@ -2570,11 +2972,38 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 const imgHtml = selectedCabinModel.image
                     ? `<img src="${selectedCabinModel.image}" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">`
                     : '';
-                const tsLabel = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.label : '';
-                document.getElementById('cabinDisplay').innerHTML = `${imgHtml}${checked.value} — ${formatPrice(Number(checked.dataset.price))}${tsLabel ? ' · ' + tsLabel : ''}`;
-                closeCabinModal();
-                updateSummary();
+                document.getElementById('cabinDisplay').innerHTML = `${imgHtml}${checked.value} — ${formatPrice(Number(checked.dataset.price))}`;
             }
+            // 更新吊顶/基础岩板显示
+            if (selectedStandardCeiling) {
+                document.getElementById('stdCeilingDisplay').innerHTML = selectedStandardCeiling.label;
+            } else {
+                document.getElementById('stdCeilingDisplay').innerHTML = '标配（默认）';
+            }
+            if (selectedStandardBaseSlab) {
+                document.getElementById('stdBaseSlabDisplay').innerHTML = selectedStandardBaseSlab.label;
+            } else {
+                document.getElementById('stdBaseSlabDisplay').innerHTML = '标配（默认）';
+            }
+            // 更新地面显示
+            const gdEl = document.getElementById('stdGroundDisplay');
+            if (gdEl) {
+                if (selectedFloorType === 'standard') {
+                    gdEl.innerHTML = '标准地面';
+                } else if (selectedFloorType === 'marble') {
+                    gdEl.innerHTML = '素面大理石' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : '');
+                } else if (selectedFloorType === 'parquet') {
+                    gdEl.innerHTML = '拼花大理石地面';
+                }
+            }
+            // 更新厅门款式显示
+            const hdEl = document.getElementById('stdHallDoorDisplay');
+            if (hdEl) {
+                hdEl.innerHTML = selectedHallDoorStyle ? selectedHallDoorStyle.label : '<span class="text-slate-400">未选</span>';
+            }
+            closeCabinModal();
+            renderStdDecorationOptions();
+            updateSummary();
         });
 
         document.getElementById('cabinLightboxClose').addEventListener('click', closeCabinLightbox);
@@ -2617,8 +3046,21 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         // 铝合金选型默认值
         selectedAluminumTouchscreen = ALUMINUM_TOUCHSCREEN_OPTIONS[0];
         selectedAluminumCallButton = ALUMINUM_CALL_BUTTON_OPTIONS[0];
-// 初始显示标准配置图片和说明
-        document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价） · 触摸屏 M-C06';
+        // 家用梯独立配置默认值
+        selectedStandardTouchscreen = STANDARD_TOUCHSCREEN_OPTIONS[0];
+        selectedStandardCallButton = STANDARD_CALL_BUTTON_OPTIONS[0];
+        selectedStandardCOP = null;                    // 初始null，与触摸屏二选一
+        selectedStandardCeiling = null;                 // 吊顶默认null（使用标配）
+        selectedStandardBaseSlab = null;                // 基础岩板默认null（使用标配）
+        selectedMarbleStyle = null;                      // 素面大理石地面默认null
+        // 初始显示标准配置图片和说明
+        document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）';
+        document.getElementById('stdCeilingDisplay').innerHTML = '标配（默认）';
+        document.getElementById('stdBaseSlabDisplay').innerHTML = '标配（默认）';
+        document.getElementById('stdGroundDisplay').innerHTML = '标准地面';
+        if (document.getElementById('stdHallDoorDisplay')) document.getElementById('stdHallDoorDisplay').innerHTML = '<span class="text-slate-400">未选</span>';
+        // 更新配置摘要
+        renderStdDecorationOptions();
 
         updateSummary();
 
