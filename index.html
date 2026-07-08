@@ -1224,9 +1224,32 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 '</div>';
             });
 
+            // ---- 触摸屏选择 ----
+            const tsSelId = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.id : null;
+            html += '<div class="border border-slate-200 rounded-xl p-4">' +
+                '<div class="flex items-center gap-2 mb-3">' +
+                '<span class="text-base font-bold text-slate-700">触摸屏选择</span>' +
+                '<span class="text-xs text-slate-400">' + ALUMINUM_TOUCHSCREEN_OPTIONS.length + '款</span>' +
+                '</div>' +
+                '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">' +
+                ALUMINUM_TOUCHSCREEN_OPTIONS.map(t => {
+                    const sTs = tsSelId === t.id;
+                    let ch = '<div class="cabin-touch-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                        (sTs ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') + '">';
+                    ch += '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">';
+                    ch += '<img src="' + t.image.replace(/"/g, '&quot;') + '" class="w-full h-full object-contain p-2" alt="' + t.label.replace(/"/g, '&quot;') + '" loading="lazy">';
+                    ch += '</div>';
+                    ch += '<div class="p-2 text-center ' + (sTs ? 'bg-blue-50' : '') + '">';
+                    ch += '<div class="text-xs font-bold text-slate-700">' + t.label.replace(/"/g, '&quot;') + '</div>';
+                    ch += '<div class="text-xs ' + (t.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (t.price > 0 ? '+' + t.price : '标配') + '</div>';
+                    ch += '</div></div>';
+                    return ch;
+                }).join('') +
+                '</div></div>';
+
             body.innerHTML = html;
 
-            // 卡片点击 → 选中
+            // 卡片点击 → 选中（轿厢款式）
             body.querySelectorAll('.cabin-card').forEach(card => {
                 card.addEventListener('click', () => {
                     body.querySelectorAll('.cabin-card').forEach(c => {
@@ -1239,6 +1262,27 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                     const inner = card.querySelector('.cabin-card-inner > div:last-child');
                     if (inner) inner.classList.add('bg-blue-50');
                     card.querySelector('input[type="radio"]').checked = true;
+                });
+            });
+
+            // 触摸屏卡片点击
+            body.querySelectorAll('.cabin-touch-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    body.querySelectorAll('.cabin-touch-card').forEach(c => {
+                        c.classList.remove('border-blue-500', 'bg-blue-50');
+                        c.classList.add('border-slate-200');
+                        const cinner = c.querySelector('div:last-child');
+                        if (cinner) cinner.classList.remove('bg-blue-50');
+                    });
+                    card.classList.remove('border-slate-200');
+                    card.classList.add('border-blue-500', 'bg-blue-50');
+                    const cinner = card.querySelector('div:last-child');
+                    if (cinner) cinner.classList.add('bg-blue-50');
+                    // 查找对应选项
+                    const idx = Array.from(card.parentElement.children).indexOf(card);
+                    if (idx >= 0 && idx < ALUMINUM_TOUCHSCREEN_OPTIONS.length) {
+                        selectedAluminumTouchscreen = ALUMINUM_TOUCHSCREEN_OPTIONS[idx];
+                    }
                 });
             });
 
@@ -1444,7 +1488,9 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const pitDepth = Number(document.getElementById('pitDepth').value || 0);
             const topHeight = Number(document.getElementById('topHeight').value || 0);
             const shaftTotalHeight = pitDepth + liftHeight + topHeight;
-            const subtotal = basePrice + speedPrice + doorPrice + throughDoorPrice + counterweightPrice + decorationPrice + cabinPrice + modelTypePrice + floorPrice + addonsPrice + floorSurcharge + heightSurcharge;
+            const aluTouchscreenPrice = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.price : 0;
+            const aluTouchscreenLabel = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.label : '未选择';
+            const subtotal = basePrice + speedPrice + doorPrice + throughDoorPrice + counterweightPrice + decorationPrice + cabinPrice + modelTypePrice + floorPrice + addonsPrice + floorSurcharge + heightSurcharge + aluTouchscreenPrice;
             return {
                 subtotal, total: subtotal,
                 basePrice, speedPrice, doorPrice,
@@ -1457,7 +1503,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 floorPrice, addonsPrice, floorSurcharge, addons,
                 floors, stops: Number(document.getElementById('stops').value || 2),
                 landingDoors: ld, liftHeight: liftHeight / 1000, floorHeights, heightSurcharge,
-                pitDepth, topHeight, shaftTotalHeight
+                pitDepth, topHeight, shaftTotalHeight,
+                aluTouchscreenPrice, aluTouchscreenLabel
             };
         }
 
@@ -1648,6 +1695,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 ${price.throughDoorPrice > 0 ? `<div>贯通门：<span class="font-semibold">${price.throughLabel}（轿门¥${price.throughCarPrice}${price.throughLandingPrice > 0 ? ' + 厅门¥' + price.throughLandingPrice + '（' + price.extraDoors + '道）' : ''}）</span></div>` : ''}
                 ${price.counterweightPrice > 0 ? `<div>对重钢板：<span class="font-semibold">${price.cwFull ? '全钢板对重' : price.cwKg + 'kg'} — ${formatPrice(price.counterweightPrice)}</span></div>` : ''}
                 ${price.cabinModel ? `<div>轿厢装潢：<span class="font-semibold">${price.cabinModel.id}</span></div>` : '<div>轿厢装潢：<span class="font-semibold">标配（304发纹不锈钢）</span></div>'}
+                <div>触摸屏：<span class="font-semibold">${price.aluTouchscreenLabel}</span></div>
                 <div class="text-xs text-slate-400 mt-1 leading-5">标准配置：轿厢/门板/门套304发纹不锈钢厚1.2mm，停电应急ARD，一键通话，断码液晶显示，中分门，PVC地坪/岩板，无油导靴，10.1/10.4寸触模屏</div>
                 <div class="mt-3 pt-3 border-t border-slate-100">
                     <span class="text-slate-400 uppercase tracking-widest text-xs font-bold block mb-2">标配参考图</span>
@@ -1685,6 +1733,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 ${price.counterweightPrice > 0 ? `<tr class="border-b border-slate-100"><td class="py-3 pr-4">对重钢板（${price.cwFull ? '全钢板对重' : price.cwKg + 'kg'}）</td><td class="py-3 text-right">${formatPrice(price.counterweightPrice)}</td></tr>` : ''}
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">层站加价（${price.floors - 2 > 0 ? `${price.floors - 2}层 × ${FLOOR_SURCHARGE}` : '0'})</td><td class="py-3 text-right">${formatPrice(price.floorSurcharge)}</td></tr>
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">轿厢装潢${price.cabinModel ? '（' + price.cabinModel.id + '）' : '（标配）'}</td><td class="py-3 text-right">${formatPrice(price.cabinPrice)}</td></tr>
+                ${price.aluTouchscreenPrice > 0 ? '<tr class="border-b border-slate-100"><td class="py-3 pr-4">触摸屏（' + price.aluTouchscreenLabel + '）</td><td class="py-3 text-right">' + formatPrice(price.aluTouchscreenPrice) + '</td></tr>' : ''}
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">地面/观光加价</td><td class="py-3 text-right">${formatPrice(price.floorPrice)}</td></tr>
                 <tr class="border-b border-slate-100"><td class="py-3 pr-4">附加功能加价</td><td class="py-3 text-right">${formatPrice(price.addonsPrice)}</td></tr>
                 <tr class="border-b border-slate-100 font-semibold"><td class="py-3 pr-4">合计</td><td class="py-3 text-right">${formatPrice(price.subtotal)}</td></tr>
@@ -1962,6 +2011,11 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 // 9. 装潢
                 if (price.decorationPrice > 0) {
                     detailItems.push(['装潢加价', price.decorationPrice / 10000]);
+                }
+
+                // 10. 触摸屏
+                if (price.aluTouchscreenPrice > 0) {
+                    detailItems.push(['触摸屏（' + price.aluTouchscreenLabel + '）', price.aluTouchscreenPrice / 10000]);
                 }
             } else {
                 // 铝合金系列：轿厢装潢
@@ -2407,7 +2461,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             document.getElementById('aluCabinConfigDisplay').innerHTML = '<div class="text-slate-500">请选择轿厢款式、铝合金颜色、触摸屏及外呼</div>';
             selectedDecoration = 0;
             selectedCabinModel = null;
-            document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）';
+            const tsLabel2 = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.label : '';
+            document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）' + (tsLabel2 ? ' · ' + tsLabel2 : '');
             // 重新初始化每层高度输入
             updateFloorHeightInputs();
             onProductSeriesChange();
@@ -2515,7 +2570,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 const imgHtml = selectedCabinModel.image
                     ? `<img src="${selectedCabinModel.image}" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">`
                     : '';
-                document.getElementById('cabinDisplay').innerHTML = `${imgHtml}${checked.value} — ${formatPrice(Number(checked.dataset.price))}`;
+                const tsLabel = selectedAluminumTouchscreen ? selectedAluminumTouchscreen.label : '';
+                document.getElementById('cabinDisplay').innerHTML = `${imgHtml}${checked.value} — ${formatPrice(Number(checked.dataset.price))}${tsLabel ? ' · ' + tsLabel : ''}`;
                 closeCabinModal();
                 updateSummary();
             }
@@ -2562,7 +2618,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         selectedAluminumTouchscreen = ALUMINUM_TOUCHSCREEN_OPTIONS[0];
         selectedAluminumCallButton = ALUMINUM_CALL_BUTTON_OPTIONS[0];
 // 初始显示标准配置图片和说明
-        document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）';
+        document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价） · 触摸屏 M-C06';
 
         updateSummary();
 
