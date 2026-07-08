@@ -157,17 +157,19 @@
                             </div>
                         </div>
                         <div>
-                            <div class="mb-3">
-                                <label class="block text-sm mb-1 text-slate-600">底坑深度（mm）</label>
-                                <input id="pitDepth" type="number" min="0" max="2000" value="300" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                            <div class="flex gap-3 mb-3">
+                                <div class="flex-1">
+                                    <label class="block text-sm mb-1 text-slate-600">底坑深度（mm）</label>
+                                    <input id="pitDepth" type="number" min="0" max="2000" value="300" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-sm mb-1 text-slate-600">顶层高度（mm）</label>
+                                    <input id="topHeight" type="number" min="2000" max="5000" value="2800" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label class="block text-sm mb-1 text-slate-600">每层高度（mm）<span class="text-xs text-slate-400 font-normal">标准 3200</span></label>
                                 <div id="floorHeights"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="block text-sm mb-1 text-slate-600">顶层高度（mm）</label>
-                                <input id="topHeight" type="number" min="2000" max="5000" value="2800" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
                             </div>
                             <div class="text-xs text-slate-500 mt-2 space-y-1">
                                 <div id="liftHeightDisplay">提升高度：0 米</div>
