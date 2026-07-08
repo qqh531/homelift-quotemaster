@@ -157,8 +157,9 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm mb-1 text-slate-600">提升高度（米）</label>
-                            <input id="liftHeight" type="number" min="1" value="12" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                            <label class="block text-sm mb-1 text-slate-600">楼层高度（mm）<span class="text-xs text-slate-400 font-normal">标准 3200</span></label>
+                            <input id="floorHeight" type="number" min="2000" max="6000" value="3200" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
+                            <div class="text-xs text-slate-500 mt-1" id="liftHeightDisplay">提升高度：0 米</div>
                         </div>
                         <div>
                             <label class="block text-sm mb-1 text-slate-600">井道备注</label>
@@ -1349,8 +1350,12 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const aluCallButtonLabel = selectedAluminumCallButton ? selectedAluminumCallButton.label : '未选择';
             // 15. 踢脚线灯带
             const aluBaseboardPrice = selectedAluminumBaseboardCount * ALUMINUM_BASEBOARD_PRICE;
+            // 楼层超高
+            const floorHeight = Number(document.getElementById('floorHeight').value || 3200);
+            const heightSurcharge = floorHeight > 3200 ? (floorHeight - 3200) * fl / 1000 * 400 : 0;
+            const liftHeight = floorHeight * fl / 1000;
             // 总和
-            const subtotal = basePrice + floorSurcharge + framePrice + glassPrice + aluminumCabinPrice + aluminumDoorPrice + doorPrice + throughDoorPrice + counterweightPrice + modelTypePrice + floorPrice + addonsPrice + aluCabinStylePrice + aluTouchscreenPrice + aluCallButtonPrice + aluBaseboardPrice;
+            const subtotal = basePrice + floorSurcharge + framePrice + glassPrice + aluminumCabinPrice + aluminumDoorPrice + doorPrice + throughDoorPrice + counterweightPrice + modelTypePrice + floorPrice + addonsPrice + aluCabinStylePrice + aluTouchscreenPrice + aluCallButtonPrice + aluBaseboardPrice + heightSurcharge;
             return {
                 subtotal, total: subtotal,
                 basePrice, floorSurcharge,
@@ -1366,7 +1371,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 floors: fl,
                 stops: Number(document.getElementById('stops').value || 2),
                 landingDoors: ld,
-                liftHeight: Number(document.getElementById('liftHeight').value || 0),
+                liftHeight, floorHeight, heightSurcharge,
                 // New aluminum selection fields
                 aluCabinStylePrice, aluCabinStyleLabel,
                 aluTouchscreenPrice, aluTouchscreenLabel,
@@ -1401,7 +1406,10 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const addonsPrice = addons.reduce((sum, item) => sum + item.price, 0);
             const floors = Number(document.getElementById('floors').value || 2);
             const floorSurcharge = Math.max(0, floors - 2) * FLOOR_SURCHARGE;
-            const subtotal = basePrice + speedPrice + doorPrice + throughDoorPrice + counterweightPrice + decorationPrice + cabinPrice + modelTypePrice + floorPrice + addonsPrice + floorSurcharge;
+            const floorHeight = Number(document.getElementById('floorHeight').value || 3200);
+            const heightSurcharge = floorHeight > 3200 ? (floorHeight - 3200) * floors / 1000 * 400 : 0;
+            const liftHeight = floorHeight * floors / 1000;
+            const subtotal = basePrice + speedPrice + doorPrice + throughDoorPrice + counterweightPrice + decorationPrice + cabinPrice + modelTypePrice + floorPrice + addonsPrice + floorSurcharge + heightSurcharge;
             return {
                 subtotal, total: subtotal,
                 basePrice, speedPrice, doorPrice,
@@ -1413,7 +1421,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 cabinModel: selectedCabinModel,
                 floorPrice, addonsPrice, floorSurcharge, addons,
                 floors, stops: Number(document.getElementById('stops').value || 2),
-                landingDoors: ld, liftHeight: Number(document.getElementById('liftHeight').value || 0)
+                landingDoors: ld, liftHeight, floorHeight, heightSurcharge
             };
         }
 
@@ -1929,6 +1937,12 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 if (aluOther > 0.0001) detailItems.push(['其他配置', aluOther]);
             }
 
+            // 楼层超高加价
+            if (price.heightSurcharge > 0) {
+                const exceedMm = price.floorHeight - 3200;
+                detailItems.push(['楼层超高（+' + exceedMm + 'mm）', price.heightSurcharge / 10000]);
+            }
+
             // 附加功能：每项单独一行
             price.addons.forEach(function(a) {
                 detailItems.push([a.label, a.price / 10000]);
@@ -2130,7 +2144,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const fl = document.getElementById('floors').value;
             const st = document.getElementById('stops').value;
             const ld = document.getElementById('landingDoors').value;
-            const lh = document.getElementById('liftHeight').value;
+            const lh = price.liftHeight;
             const cap = document.getElementById('capacity').value;
             const spd = document.getElementById('speed').value;
             const throughKey = (document.querySelector('input[name="throughDoor"]:checked')||{}).value || 'none';
@@ -2323,7 +2337,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             document.getElementById('floors').value = 2;
             document.getElementById('stops').value = 2;
             document.getElementById('landingDoors').value = 2;
-            document.getElementById('liftHeight').value = 12;
+            document.getElementById('floorHeight').value = 3200;
             document.getElementById('shaftRemark').value = '';
             document.getElementById('productSeries').value = 'standard';
             document.getElementById('capacity').value = '400';
@@ -2398,6 +2412,15 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         document.getElementById('resetBtn').addEventListener('click', resetForm);
         document.getElementById('backBtn').addEventListener('click', () => switchTab('config'));
         document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+        function updateLiftHeightDisplay() {
+            const fh = Number(document.getElementById('floorHeight').value || 3200);
+            const fl = Number(document.getElementById('floors').value || 2);
+            const totalM = (fh * fl / 1000).toFixed(1);
+            document.getElementById('liftHeightDisplay').textContent = '提升高度：' + totalM + ' 米（楼层高度 ' + fh + 'mm × ' + fl + '层）';
+        }
+        document.getElementById('floorHeight').addEventListener('input', updateLiftHeightDisplay);
+        document.getElementById('floors').addEventListener('input', updateLiftHeightDisplay);
 
         document.getElementById('cabinSelectBtn').addEventListener('click', openCabinModal);
         document.getElementById('cabinModalClose').addEventListener('click', closeCabinModal);
