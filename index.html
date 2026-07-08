@@ -157,7 +157,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm mb-1 text-slate-600">楼层高度（mm）<span class="text-xs text-slate-400 font-normal">标准 3200</span></label>
+                            <label class="block text-sm mb-1 text-slate-600">提升高度（mm）<span class="text-xs text-slate-400 font-normal">标准 3200</span></label>
                             <input id="floorHeight" type="number" min="2000" max="6000" value="3200" class="field w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500">
                             <div class="text-xs text-slate-500 mt-1" id="liftHeightDisplay">提升高度：0 米</div>
                         </div>
@@ -1371,7 +1371,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 floors: fl,
                 stops: Number(document.getElementById('stops').value || 2),
                 landingDoors: ld,
-                liftHeight, floorHeight, heightSurcharge,
+                liftHeight, liftHeightInput, heightSurcharge,
                 // New aluminum selection fields
                 aluCabinStylePrice, aluCabinStyleLabel,
                 aluTouchscreenPrice, aluTouchscreenLabel,
@@ -2417,7 +2417,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             const fh = Number(document.getElementById('floorHeight').value || 3200);
             const fl = Number(document.getElementById('floors').value || 2);
             const totalM = (fh * fl / 1000).toFixed(1);
-            document.getElementById('liftHeightDisplay').textContent = '提升高度：' + totalM + ' 米（楼层高度 ' + fh + 'mm × ' + fl + '层）';
+            document.getElementById('liftHeightDisplay').textContent = '提升高度：' + totalM + ' 米（' + fh + 'mm × ' + fl + '层）';
         }
         document.getElementById('floorHeight').addEventListener('input', updateLiftHeightDisplay);
         document.getElementById('floors').addEventListener('input', updateLiftHeightDisplay);
