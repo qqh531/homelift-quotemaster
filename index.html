@@ -1621,7 +1621,11 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             }
             // 吊顶在 modal confirm 中已更新，这里只需兜底
             if (clEl && !clEl.innerHTML.trim()) {
-                clEl.innerHTML = '标配（默认）';
+                clEl.innerHTML = selectedStandardCeiling
+                    ? selectedStandardCeiling.label + (selectedStandardCeiling.price > 0 ? ' (+' + selectedStandardCeiling.price + '元)' : '')
+                    : '标配（默认）';
+            } else if (clEl && selectedStandardCeiling) {
+                clEl.innerHTML = selectedStandardCeiling.label + (selectedStandardCeiling.price > 0 ? ' <span class="text-primary">(+' + selectedStandardCeiling.price + '元)</span>' : '');
             }
             // 地面显示
             var gdEl = document.getElementById('stdGroundDisplay');
@@ -2974,7 +2978,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             }
             // 更新吊顶/基础岩板显示
             if (selectedStandardCeiling) {
-                document.getElementById('stdCeilingDisplay').innerHTML = selectedStandardCeiling.label;
+                document.getElementById('stdCeilingDisplay').innerHTML = selectedStandardCeiling.label + (selectedStandardCeiling.price > 0 ? ' <span class="text-primary">(+' + selectedStandardCeiling.price + '元)</span>' : '');
             } else {
                 document.getElementById('stdCeilingDisplay').innerHTML = '标配（默认）';
             }
