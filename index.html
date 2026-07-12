@@ -326,10 +326,6 @@
                                     <span class="text-slate-500 text-xs"><i class="fa fa-sun-o text-primary w-4 mr-1"></i>吊顶款式</span>
                                     <span id="stdCeilingDisplay" class="font-medium text-xs text-right"></span>
                                 </div>
-                                <div onclick="openCabinModal('baseslab')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
-                                    <span class="text-slate-500 text-xs"><i class="fa fa-square text-primary w-4 mr-1"></i>基础岩板</span>
-                                    <span id="stdBaseSlabDisplay" class="font-medium text-xs text-right"></span>
-                                </div>
                                 <div onclick="openCabinModal('ground')" class="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-200">
                                     <span class="text-slate-500 text-xs"><i class="fa fa-th-large text-primary w-4 mr-1"></i>地面</span>
                                     <span id="stdGroundDisplay" class="font-medium text-xs text-right"></span>
@@ -501,15 +497,14 @@
                 <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa fa-cubes text-primary"></i>家用电梯配置选择</h3>
                 <button id="cabinModalClose" type="button" class="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
             </div>
-            <div class="flex border-b border-slate-200 px-6 overflow-x-auto" id="cabinModalTabs">
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium border-b-2 border-primary text-primary whitespace-nowrap" data-tab="cabin">轿厢款式</button>
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="touchscreen">触摸屏</button>
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="callbutton">外呼款式</button>
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="cop">轿内操作箱</button>
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="ceiling">吊顶款式</button>
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="baseslab">基础岩板</button>
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="ground">地面</button>
-                <button class="std-tab-btn px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap" data-tab="halldoor">厅门款式</button>
+            <div class="flex border-b border-slate-200 px-6" id="cabinModalTabs">
+                <button class="std-tab-btn px-2.5 py-3 text-xs font-medium border-b-2 border-primary text-primary whitespace-nowrap flex-1 min-w-0" data-tab="cabin">轿厢款式</button>
+                <button class="std-tab-btn px-2.5 py-3 text-xs font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap flex-1 min-w-0" data-tab="touchscreen">触摸屏</button>
+                <button class="std-tab-btn px-2.5 py-3 text-xs font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap flex-1 min-w-0" data-tab="callbutton">外呼款式</button>
+                <button class="std-tab-btn px-2.5 py-3 text-xs font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap flex-1 min-w-0" data-tab="cop">轿内操作箱</button>
+                <button class="std-tab-btn px-2.5 py-3 text-xs font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap flex-1 min-w-0" data-tab="ceiling">吊顶款式</button>
+                <button class="std-tab-btn px-2.5 py-3 text-xs font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap flex-1 min-w-0" data-tab="ground">地面</button>
+                <button class="std-tab-btn px-2.5 py-3 text-xs font-medium text-slate-500 border-b-2 border-transparent whitespace-nowrap flex-1 min-w-0" data-tab="halldoor">厅门款式</button>
             </div>
             <div class="p-6 overflow-y-auto space-y-6" id="cabinModalBody"></div>
             <div class="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
@@ -1394,22 +1389,6 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                                 '<div class="text-xs ' + (c.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (c.price > 0 ? '+' + c.price + '元' : '标配') + '</div>' +
                                 '</div></div>';
                         }).join('') + '</div>';
-                } else if (tab === 'baseslab') {
-                    const bsSelId = selectedStandardBaseSlab ? selectedStandardBaseSlab.id : null;
-                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
-                        STANDARD_BASE_SLAB_OPTIONS.map(b => {
-                            const sBs = bsSelId === b.id;
-                            return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
-                                (sBs ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
-                                '" data-type="baseslab" data-id="' + b.id + '" data-label="' + b.label + '" data-image="' + b.image + '" data-price="' + b.price + '">' +
-                                '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
-                                '<img src="' + b.image + '" class="w-full h-full object-contain p-1" alt="' + b.label + '" loading="lazy">' +
-                                '</div>' +
-                                '<div class="p-2 text-center ' + (sBs ? 'bg-blue-50' : '') + '">' +
-                                '<div class="text-sm font-bold">' + b.label + '</div>' +
-                                '<div class="text-xs ' + (b.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (b.price > 0 ? '+' + b.price + '元' : '标配') + '</div>' +
-                                '</div></div>';
-                        }).join('') + '</div>';
                 } else if (tab === 'ground') {
                     const floorTypes = [
                         { id: 'standard', label: '标准地面', desc: '基础配置', price: 0 },
@@ -1425,8 +1404,28 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                                 '<div class="font-medium text-base">' + ft.label + '</div>' +
                                 '<div class="text-sm text-slate-500 mt-1">' + ft.desc + '</div>' +
                                 (sFt && ft.id === 'marble' && selectedMarbleStyle ? '<div class="text-xs text-primary mt-2"><i class="fa fa-check-circle-o"></i> 已选：' + selectedMarbleStyle.label + '</div>' : '') +
+                                (sFt && ft.id === 'standard' && selectedStandardBaseSlab ? '<div class="text-xs text-primary mt-2"><i class="fa fa-check-circle-o"></i> 已选：' + selectedStandardBaseSlab.label + '</div>' : '') +
                                 '</div>';
                         }).join('') + '</div>';
+                    // 标准地面岩板选择
+                    if (selectedFloorType === 'standard') {
+                        const bsSelId = selectedStandardBaseSlab ? selectedStandardBaseSlab.id : null;
+                        html += '<div class="border-t border-slate-200 pt-4"><div class="text-sm font-bold text-slate-600 mb-3"><i class="fa fa-picture-o text-primary mr-1"></i>选择地面岩板款式</div>' +
+                            '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">' +
+                            STANDARD_BASE_SLAB_OPTIONS.map(b => {
+                                const sBs = bsSelId === b.id;
+                                return '<div class="std-sel-card rounded-xl border-2 cursor-pointer transition overflow-hidden ' +
+                                    (sBs ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300') +
+                                    '" data-type="standard" data-id="' + b.id + '" data-label="' + b.label + '" data-image="' + b.image + '" data-price="' + b.price + '">' +
+                                    '<div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">' +
+                                    '<img src="' + b.image + '" class="w-full h-full object-contain p-1" alt="' + b.label + '" loading="lazy">' +
+                                    '</div>' +
+                                    '<div class="p-2 text-center ' + (sBs ? 'bg-blue-50' : '') + '">' +
+                                    '<div class="text-sm font-bold">' + b.label + '</div>' +
+                                    '<div class="text-xs ' + (b.price > 0 ? 'text-primary font-semibold' : 'text-green-600') + '">' + (b.price > 0 ? '+' + b.price + '元' : '标配') + '</div>' +
+                                    '</div></div>';
+                            }).join('') + '</div></div>';
+                    }
                     // 大理石款式选择（仅在选择素面大理石时显示）
                     if (selectedFloorType === 'marble') {
                         const mSelId = selectedMarbleStyle ? selectedMarbleStyle.id : null;
@@ -1485,7 +1484,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                     const type = card.dataset.type;
                     const data = { id: card.dataset.id, label: card.dataset.label, image: card.dataset.image, price: Number(card.dataset.price || 0) };
 
-                    if (type === 'touchscreen' || type === 'callbutton' || type === 'cop' || type === 'ceiling' || type === 'baseslab' || type === 'marble' || type === 'halldoor') {
+                    if (type === 'touchscreen' || type === 'callbutton' || type === 'cop' || type === 'ceiling' || type === 'standard' || type === 'marble' || type === 'halldoor') {
                         // Single selection: clear others in same group
                         body.querySelectorAll('.std-sel-card[data-type="' + type + '"]').forEach(c => {
                             c.classList.remove('border-blue-500', 'bg-blue-50');
@@ -1513,8 +1512,9 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                         selectedStandardTouchscreen = null;
                     } else if (type === 'ceiling') {
                         selectedStandardCeiling = data;
-                    } else if (type === 'baseslab') {
+                    } else if (type === 'standard') {
                         selectedStandardBaseSlab = data;
+                        selectedFloorType = 'standard';
                     } else if (type === 'marble') {
                         selectedMarbleStyle = data;
                         selectedFloorType = 'marble';
@@ -1603,7 +1603,6 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             var cbEl = document.getElementById('stdCallButtonDisplay');
             var copEl = document.getElementById('stdCOPDisplay');
             var clEl = document.getElementById('stdCeilingDisplay');
-            var bsEl = document.getElementById('stdBaseSlabDisplay');
 
             if (tsEl) {
                 tsEl.innerHTML = selectedStandardTouchscreen
@@ -1620,17 +1619,14 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                     ? selectedStandardCOP.label
                     : '<span class="text-slate-400">未选</span>';
             }
-            // 吊顶和岩板在 modal confirm 中已更新，这里只需兜底
+            // 吊顶在 modal confirm 中已更新，这里只需兜底
             if (clEl && !clEl.innerHTML.trim()) {
                 clEl.innerHTML = '标配（默认）';
-            }
-            if (bsEl && !bsEl.innerHTML.trim()) {
-                bsEl.innerHTML = '标配（默认）';
             }
             // 地面显示
             var gdEl = document.getElementById('stdGroundDisplay');
             if (gdEl) {
-                if (selectedFloorType === 'standard') gdEl.innerHTML = '标准地面';
+                if (selectedFloorType === 'standard') gdEl.innerHTML = '标准地面' + (selectedStandardBaseSlab ? '（' + selectedStandardBaseSlab.label + '）' : '');
                 else if (selectedFloorType === 'marble') gdEl.innerHTML = '素面大理石' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : '');
                 else if (selectedFloorType === 'parquet') gdEl.innerHTML = '拼花大理石地面';
             }
@@ -1969,7 +1965,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         }
 
         function selectedFloorLabel() {
-            if (selectedFloorType === 'standard') return '标准地面';
+            if (selectedFloorType === 'standard') return '标准地面' + (selectedStandardBaseSlab ? '（' + selectedStandardBaseSlab.label + '）' : '');
             if (selectedFloorType === 'marble') return '素面大理石地面' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : '');
             if (selectedFloorType === 'parquet') return '拼花大理石地面';
             return '标准地面';
@@ -2863,7 +2859,6 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             selectedStandardCeiling = null;
             selectedStandardBaseSlab = null;
             document.getElementById('stdCeilingDisplay').innerHTML = '标配（默认）';
-            document.getElementById('stdBaseSlabDisplay').innerHTML = '标配（默认）';
             document.getElementById('stdGroundDisplay').innerHTML = '标准地面';
             document.getElementById('stdHallDoorDisplay').innerHTML = '<span class="text-slate-400">未选</span>';
             // 更新配置摘要
@@ -2983,16 +2978,12 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
             } else {
                 document.getElementById('stdCeilingDisplay').innerHTML = '标配（默认）';
             }
-            if (selectedStandardBaseSlab) {
-                document.getElementById('stdBaseSlabDisplay').innerHTML = selectedStandardBaseSlab.label;
-            } else {
-                document.getElementById('stdBaseSlabDisplay').innerHTML = '标配（默认）';
-            }
             // 更新地面显示
             const gdEl = document.getElementById('stdGroundDisplay');
             if (gdEl) {
                 if (selectedFloorType === 'standard') {
-                    gdEl.innerHTML = '标准地面';
+                    gdEl.innerHTML = '标准地面' + (selectedStandardBaseSlab ? '（' + selectedStandardBaseSlab.label + '）' : '');
+                } else if (selectedFloorType === 'marble') {
                 } else if (selectedFloorType === 'marble') {
                     gdEl.innerHTML = '素面大理石' + (selectedMarbleStyle ? '（' + selectedMarbleStyle.label + '）' : '');
                 } else if (selectedFloorType === 'parquet') {
@@ -3059,7 +3050,6 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
         // 初始显示标准配置图片和说明
         document.getElementById('cabinDisplay').innerHTML = '<img src="' + STANDARD_CONFIG_IMAGE + '" class="inline-block w-8 h-8 rounded object-cover border border-slate-200 mr-1.5">标配（304发纹不锈钢） — 0 元（不加价）';
         document.getElementById('stdCeilingDisplay').innerHTML = '标配（默认）';
-        document.getElementById('stdBaseSlabDisplay').innerHTML = '标配（默认）';
         document.getElementById('stdGroundDisplay').innerHTML = '标准地面';
         if (document.getElementById('stdHallDoorDisplay')) document.getElementById('stdHallDoorDisplay').innerHTML = '<span class="text-slate-400">未选</span>';
         // 更新配置摘要
