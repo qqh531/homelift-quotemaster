@@ -1310,8 +1310,8 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                             cardHtml += '<div class="p-2 text-center ' + innerCls + '">';
                             cardHtml += '<div class="text-xs font-bold text-slate-700">' + m.id.replace(/"/g, '&quot;') + '</div>';
                             cardHtml += '<div class="text-xs ' + priceCls + '">' + priceTxt + '</div>';
-                            cardHtml += '</div></div></div>';
                             cardHtml += '<input type="radio" name="cabinRadio" value="' + m.id.replace(/"/g, '&quot;') + '" data-price="' + priceStr + '" data-image="' + (m.image || '').replace(/"/g, '&quot;') + '" class="hidden"' + (sSel ? ' checked' : '') + '>';
+                            cardHtml += '</div></div></div>';
                             return cardHtml;
                         });
 
