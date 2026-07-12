@@ -431,6 +431,7 @@
                         <div class="flex justify-between"><span class="text-slate-500">对重钢板</span><span id="counterweightPriceText" class="font-semibold">0 元</span></div>
                         <div class="flex justify-between"><span class="text-slate-500">装饰</span><span id="decorationPriceText" class="font-semibold">0 元</span></div>
                         <div class="flex justify-between"><span class="text-slate-500">轿厢装潢</span><span id="cabinPriceText" class="font-semibold">0 元</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">吊顶</span><span id="ceilingPriceText" class="font-semibold">0 元</span></div>
                         <div class="flex justify-between"><span class="text-slate-500">地面/观光</span><span id="floorPriceText" class="font-semibold">0 元</span></div>
                         <div class="flex justify-between"><span class="text-slate-500">层站加价</span><span id="floorSurchargeText" class="font-semibold">0 元</span></div>
                         <div class="flex justify-between"><span class="text-slate-500">附加功能</span><span id="addonsPriceText" class="font-semibold">0 元</span></div>
@@ -1910,6 +1911,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 document.getElementById('doorPriceText').textContent = formatPrice(price.doorPrice);
                 document.getElementById('decorationPriceText').textContent = '0 元';
                 document.getElementById('cabinPriceText').textContent = '0 元';
+                document.getElementById('ceilingPriceText').textContent = '0 元';
                 // 右侧面板标签加上单价×数量
                 const is40 = price.frameSpec === '40';
                 const unitPrice = is40 ? 1600 : 1800;
@@ -1950,7 +1952,7 @@ let selectedAluminumBaseboardCount = 0;   // 踢脚线灯带数量
                 document.getElementById('speedPriceText').textContent = formatPrice(price.speedPrice);
                 document.getElementById('decorationPriceText').textContent = formatPrice(price.decorationPrice);
                 document.getElementById('cabinPriceText').textContent = formatPrice(price.cabinPrice);
-            }
+                document.getElementById('ceilingPriceText').textContent = formatPrice(price.stdCeilingPrice);
             document.getElementById('modelTypePriceText').textContent = formatPrice(price.modelTypePrice);
             document.getElementById('doorPriceText').textContent = formatPrice(price.doorPrice);
             document.getElementById('throughDoorPriceText').textContent = formatPrice(price.throughDoorPrice);
